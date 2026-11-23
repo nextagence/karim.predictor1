@@ -1,0 +1,2886 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متنبئ الذكاء الاصطناعي</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-deep: #051610;
+      --bg-card: rgba(10, 34, 25, 0.78);
+      --emerald-accent: #10b981;
+      --gold-primary: #d4af37;
+      --gold-bright: #fbbf24;
+      --crimson-morocco: #c8102e;
+    }
+
+    body {
+      font-family: "Cairo", sans-serif;
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, transparent 55%),
+        radial-gradient(circle at 85% 90%, rgba(200, 16, 46, 0.12) 0%, transparent 45%),
+        radial-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 26px 26px;
+      color: #f3f4f6;
+      overflow-x: hidden;
+    }
+
+    .font-mono {
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .gold-glow-text {
+      color: var(--gold-bright);
+      text-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+    }
+
+    .emerald-glow-text {
+      color: #34d399;
+      text-shadow: 0 0 14px rgba(16, 185, 129, 0.45);
+    }
+
+    .morocco-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .cursor::after {
+      content: "_";
+      color: var(--gold-bright);
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .hacker-input {
+      background-color: rgba(4, 20, 14, 0.9) !important;
+      border-color: rgba(212, 175, 55, 0.45) !important;
+      color: #fef3c7 !important;
+    }
+    .hacker-input:focus {
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.45);
+      border-color: var(--gold-bright) !important;
+    }
+
+    .blinking-red {
+      color: #f87171;
+      animation: blink-red 1.5s step-end infinite;
+    }
+    @keyframes blink-red {
+      50% { opacity: 0.45; }
+    }
+
+    .shake {
+      animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    .signal-card {
+      background: linear-gradient(180deg, rgba(12, 41, 30, 0.85) 0%, rgba(6, 22, 16, 0.95) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .signal-card:hover:not(.locked-card) {
+      transform: translateY(-6px);
+      border-color: var(--gold-bright);
+      box-shadow: 0 12px 28px rgba(212, 175, 55, 0.25), 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-morocco-primary {
+      background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+      color: #051610;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      transition: all 0.25s ease;
+    }
+    .btn-morocco-primary:hover {
+      background: linear-gradient(135deg, #fde047 0%, #fbbf24 100%);
+      box-shadow: 0 6px 22px rgba(251, 191, 36, 0.45);
+    }
+
+    .btn-morocco-emerald {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.28);
+      transition: all 0.25s ease;
+    }
+    .btn-morocco-emerald:hover {
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.4);
+    }
+
+    .btn-morocco-crimson {
+      background: linear-gradient(135deg, #991b1b 0%, #c8102e 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(200, 16, 46, 0.3);
+    }
+    .btn-morocco-crimson:hover {
+      background: linear-gradient(135deg, #b91c1c 0%, #e11d48 100%);
+    }
+
+    #chat-widget {
+      transition: all 0.3s ease-in-out;
+    }
+    #chat-messages::-webkit-scrollbar {
+      width: 4px;
+    }
+    #chat-messages::-webkit-scrollbar-track {
+      background: #061a12;
+    }
+    #chat-messages::-webkit-scrollbar-thumb {
+      background: var(--gold-primary);
+      border-radius: 4px;
+    }
+
+    #live-feed-container {
+      mask-image: linear-gradient(to left, transparent, black 4%, black 96%, transparent);
+      -webkit-mask-image: linear-gradient(to left, transparent, black 4%, black 96%, transparent);
+    }
+    .winner-item {
+      animation: slideInFromRight 0.5s ease-out forwards;
+      gap: 10px;
+      background: rgba(11, 38, 28, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+    }
+    @keyframes slideInFromRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .btn-disabled {
+      background: #1f2937 !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+      color: #6b7280 !important;
+    }
+
+    .multiplier-rising {
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+      color: #fbbf24;
+    }
+    .multiplier-final {
+      color: #34d399;
+      text-shadow: 0 0 24px rgba(52, 211, 153, 0.85);
+    }
+
+    .custom-select-options {
+      animation: fadeIn 0.2s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mine-cell {
+      background-color: rgba(8, 28, 21, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 0.5rem;
+      transition: all 0.3s ease-in-out;
+      cursor: default;
+    }
+    .mine-cell.safe {
+      background-image: url(https://www.freeiconspng.com/uploads/yellow-christmas-star-png-18.png);
+      background-size: 68%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: rgba(16, 185, 129, 0.28);
+      border-color: var(--gold-bright);
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
+    }
+
+    .game-console {
+      background-color: rgba(3, 14, 10, 0.92);
+      border-color: rgba(212, 175, 55, 0.3);
+      height: 8rem;
+    }
+    .game-console p {
+      animation: fadeInConsole 0.3s ease-in;
+      color: #d1fae5;
+    }
+    .game-console p.success {
+      color: #fbbf24;
+      font-weight: 700;
+    }
+    .game-console p.error {
+      color: #f87171;
+    }
+    @keyframes fadeInConsole {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .penalty-gate-post {
+      background: linear-gradient(180deg, #fde047, #d4af37);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+    .penalty-target-zone {
+      background-color: rgba(212, 175, 55, 0.08);
+      border: 2px dashed rgba(212, 175, 55, 0.35);
+      transition: all 0.3s ease-in-out;
+    }
+    .penalty-target-zone.highlight {
+      background-color: rgba(16, 185, 129, 0.85);
+      border: 2px solid #fde047;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.85);
+    }
+
+    .number-signal-display {
+      color: #fbbf24;
+      text-shadow: 0 0 24px rgba(251, 191, 36, 0.85);
+    }
+
+    #chicken-road-viewport {
+      overflow: hidden;
+      background: linear-gradient(to bottom, #071e16, #0d2e22);
+      border-color: var(--gold-primary);
+    }
+    #chicken-road-track {
+      transition: transform 0.2s linear;
+    }
+    .chicken-stove {
+      background-color: #0f3628;
+      border: 2px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 4px 0 #04120d;
+    }
+    #chicken-icon {
+      transition: transform 0.2s ease-out;
+      z-index: 10;
+    }
+
+    .locked-card {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .locked-card .card-image {
+      filter: blur(4px) brightness(0.75);
+      transform: scale(1.1);
+    }
+
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0b291e 0%, #133b2c 100%);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+    .shimmer-btn:hover {
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
+    }
+    .shimmer-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -150%;
+      width: 75%;
+      height: 100%;
+      background: linear-gradient(-90deg, transparent, rgba(251, 191, 36, 0.4), transparent);
+      animation: shimmer-rtl 4.5s infinite linear;
+    }
+    @keyframes shimmer-rtl {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-350%); }
+    }
+
+    .blinking-text {
+      animation: blink-gold-red 1.5s infinite;
+    }
+    @keyframes blink-gold-red {
+      0%, 100% { color: #fbbf24; }
+      50% { color: #f87171; }
+    }
+
+    #wheel-pointer {
+      right: -6px;
+      border-right: 26px solid #c8102e;
+      border-left: 0;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.8));
+      transform: translateY(-50%) rotate(0);
+      z-index: 5;
+    }
+    @media (min-width: 640px) {
+      #wheel-pointer {
+        border-right-width: 32px;
+        border-top-width: 20px;
+        border-bottom-width: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Landing Screen -->
+  <div id="main-content" class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="morocco-panel rounded-2xl p-8 md:p-12 max-w-xl w-full text-center relative overflow-hidden">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-amber-400/40 text-amber-300 text-xs font-bold mb-6">
+        <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+        <span>النسخة الملكية للمغرب • AI VIP</span>
+      </div>
+      <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-wide gold-glow-text cursor-default">
+          <span id="typing-text">متنبئ الذكاء الاصطناعي</span><span class="cursor"></span>
+        </h1>
+      </header>
+      <button id="openModalBtn" class="btn-morocco-primary w-full sm:w-auto px-10 py-4 rounded-xl text-lg active:scale-95">
+        <i class="fas fa-crown ml-2"></i>الحصول على إشارات الذكاء الاصطناعي
+      </button>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div id="app-container" class="hidden min-h-screen container mx-auto p-4 md:p-8">
+    <div class="w-full flex justify-between items-center mb-6 morocco-panel rounded-xl px-4 py-3">
+      <div class="flex items-center gap-2 text-amber-300 font-bold text-sm sm:text-base">
+        <i class="fas fa-star text-red-500"></i>
+        <span>نظام التنبؤ الذكي</span>
+      </div>
+      <div class="flex items-center">
+        <button id="lotteryBtn" class="shimmer-btn rounded-lg px-4 py-2 text-sm ml-3">
+          <i class="fas fa-dharmachakra ml-2"></i>اليانصيب
+        </button>
+        <button id="logoutBtn" class="btn-morocco-crimson px-4 py-2 text-sm rounded-lg transition-colors active:scale-95">
+          <i class="fas fa-sign-out-alt ml-2"></i>تسجيل الخروج
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Feed -->
+    <div id="live-feed-section" class="mb-10">
+      <h3 class="text-center text-xl font-bold mb-4 tracking-wide flex items-center justify-center text-amber-300">
+        <span>// طلابي //</span>
+        <span class="bg-[#c8102e] text-white text-xs font-bold px-2.5 py-1 rounded-full mr-3 animate-pulse shadow-md shadow-red-600/40">مباشر</span>
+      </h3>
+      <div id="live-feed-container" class="h-24 morocco-panel rounded-xl p-2.5 flex items-center space-x-4 overflow-x-hidden"></div>
+    </div>
+
+    <!-- Signals Grid -->
+    <div id="signals-section">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-10 gold-glow-text">
+        // إشارات الذكاء الاصطناعي //
+      </h2>
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <!-- VIP Card -->
+        <div class="signal-card locked-card rounded-xl overflow-hidden flex flex-col border-amber-400/50" data-card-type="vip" data-game="vip">
+          <div class="w-full h-48 overflow-hidden relative">
+            <img src="https://iili.io/KOce6qG.png" alt="VIP AI PREDICTOR" class="card-image w-full h-full object-cover transition-all duration-300" />
+            <div class="banner-container absolute inset-0 flex items-center justify-center">
+              <div class="absolute w-[150%] bg-[#c8102e] text-white text-center font-bold py-2 rotate-12 text-sm shadow-lg border-y border-amber-300/50">
+                تحتاج إلى رمز وصول آخر
+              </div>
+            </div>
+          </div>
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-amber-300" style="text-shadow: 0 0 10px rgba(251, 191, 36, 0.5)">
+              VIP AI PREDICTOR
+            </h3>
+            <p id="stats-vip" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="w-full mt-auto bg-gray-800 text-gray-500 rounded-lg px-4 py-2.5 cursor-not-allowed font-bold" disabled>
+              تفعيل
+            </button>
+          </div>
+        </div>
+
+        <!-- Aviator -->
+        <div class="signal-card rounded-xl overflow-hidden flex flex-col" data-game="aviator">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqBdX8SuaC1Ws7ZYuCVQstQ4qRi9A_3SWujg&s" alt="Aviator AI PREDICTOR" class="card-image w-full h-48 object-cover" />
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-white">Aviator AI PREDICTOR</h3>
+            <p id="stats-aviator" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="activate-btn btn-morocco-emerald w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95">
+              تفعيل
+            </button>
+          </div>
+        </div>
+
+        <!-- Mines -->
+        <div class="signal-card rounded-xl overflow-hidden flex flex-col" data-game="mines">
+          <img src="https://rotativka.com/en/wp-content/uploads/sites/3/2021/06/Mines-Demo.jpg" alt="Mines AI PREDICTOR" class="card-image w-full h-48 object-cover" />
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-white">Mines AI PREDICTOR</h3>
+            <p id="stats-mines" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="activate-btn btn-morocco-emerald w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95">
+              تفعيل
+            </button>
+          </div>
+        </div>
+
+        <!-- Penalty -->
+        <div class="signal-card rounded-xl overflow-hidden flex flex-col" data-game="penalty">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThYP5CGxc52hWd4ToMHI8MIJhun5BEjHh5LQ&s" alt="Penalty AI PREDICTOR" class="card-image w-full h-48 object-cover" />
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-white">Penalty AI PREDICTOR</h3>
+            <p id="stats-penalty" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="activate-btn btn-morocco-emerald w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95">
+              تفعيل
+            </button>
+          </div>
+        </div>
+
+        <!-- Apple -->
+        <div class="signal-card rounded-xl overflow-hidden flex flex-col" data-game="apple">
+          <img src="https://play-lh.googleusercontent.com/ezAY-TvV3PlhYWLs8k8czRjWWSdBwFtPrw72fNpS8p6wByC0xBG-Dgt0K5ojieZXrg" alt="Apple of Fortune AI PREDICTOR" class="card-image w-full h-48 object-cover" />
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-white">Apple of Fortune AI PREDICTOR</h3>
+            <p id="stats-apple" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="activate-btn btn-morocco-emerald w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95">
+              تفعيل
+            </button>
+          </div>
+        </div>
+
+        <!-- Chicken -->
+        <div class="signal-card rounded-xl overflow-hidden flex flex-col" data-game="chicken">
+          <img src="https://cdn6.aptoide.com/imgs/1/0/2/1023a04c18a7a91673200703af12a58f_icon.png" alt="Chicken Road AI PREDICTOR" class="card-image w-full h-48 object-cover" />
+          <div class="p-4 flex flex-col flex-grow text-center">
+            <h3 class="card-title text-lg font-bold mb-2 flex-grow text-white">Chicken Road AI PREDICTOR</h3>
+            <p id="stats-chicken" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight"></p>
+            <button class="activate-btn btn-morocco-emerald w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95">
+              تفعيل
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Screens -->
+    <div id="game-view" class="hidden">
+      <!-- VIP Screen -->
+      <div id="game-screen-vip" class="game-screen hidden flex-col items-center justify-center">
+        <div class="w-full relative min-h-[60vh] flex flex-col items-center justify-center morocco-panel rounded-2xl p-8 pt-16 pb-8 text-center">
+          <div class="absolute top-4 right-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h2 class="game-title text-3xl sm:text-4xl text-amber-300 mb-6 font-extrabold gold-glow-text"></h2>
+          <div class="max-w-xl text-lg text-emerald-50 space-y-4">
+            <p>تهانينا على حصولك على أندر متنبئ يا صديقي!</p>
+            <p>المتنبئ الذي تلقيته للتو يستخدم أحدث تقنيات الذكاء الاصطناعي لتوقع المراهنات الرياضية!</p>
+            <p>الآن، بفضل الذكاء الاصطناعي، يمكنك التنبؤ بالفائز في الأحداث الرياضية بدقة 99٪!</p>
+            <p>نحن نستخدم أحدث ذكاء اصطناعي، وهو متاح لنا فقط في الوصول الخاص.</p>
+            <p class="font-bold text-amber-300">
+              اكتب لي حتى أتمكن من إعطائك التنبؤات باستخدام الذكاء الاصطناعي الخاص بنا!
+            </p>
+          </div>
+          <a id="vip-send-message-link" href="https://t.me/youssef_predictor_bot" class="btn-morocco-primary mt-8 px-8 py-3.5 text-lg rounded-xl active:scale-95">
+            إرسال رسالة
+          </a>
+        </div>
+      </div>
+
+      <!-- Slot Screen -->
+      <div id="game-screen-slot" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Slot"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "SLOTS" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="slot-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "SLOTS" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="slot-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <div class="absolute top-4 right-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-4 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="mb-2 py-4 flex-grow flex items-center justify-center">
+            <p id="slot-signal-display" class="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-white transition-colors duration-500 px-4">
+              دور
+              <span id="slot-number" class="slot-number font-mono text-amber-400" style="text-shadow: 0 0 18px rgba(251, 191, 36, 0.7)">#</span>
+              مرات
+            </p>
+          </div>
+          <p id="slot-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold px-2"></p>
+          <div id="slot-actions-initial" class="slot-actions-initial flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="slot-get-bet-btn" class="slot-get-bet-btn btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="slot-get-signal-btn" class="slot-get-signal-btn flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="slot-get-another-btn" class="slot-get-another-btn btn-morocco-primary hidden w-full max-w-md px-4 py-3 text-base rounded-xl active:scale-95">
+            الحصول على إشارة أخرى
+          </button>
+          <div id="slot-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aviator Screen -->
+      <div id="game-screen-aviator" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Aviator"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "AVIATOR" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="aviator-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "AVIATOR" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="aviator-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <div class="absolute top-4 right-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <div class="absolute top-4 left-4 flex flex-col sm:flex-row gap-2">
+            <button class="open-video-btn text-white bg-[#c8102e] hover:bg-red-600 border border-amber-400/50 rounded-lg px-4 py-1.5 text-sm font-bold transition-all active:scale-95" data-videos-key="howToUse" data-game-key="aviator">
+              كيفية استخدام المتنبئ
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-4 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="mb-2 py-4">
+            <p id="aviator-multiplier" class="text-7xl md:text-9xl font-mono font-bold text-center text-white transition-colors duration-500">
+              x1.00
+            </p>
+          </div>
+          <p id="aviator-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold px-2"></p>
+          <div id="aviator-actions-initial" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="aviator-get-bet-btn" class="btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="aviator-get-signal-btn" class="flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="aviator-get-another-btn" class="btn-morocco-primary hidden w-full max-w-md px-4 py-3 text-base rounded-xl active:scale-95">
+            الحصول على إشارة أخرى
+          </button>
+          <div id="aviator-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mines Screen -->
+      <div id="game-screen-mines" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Mines"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "MINES" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="mines-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "MINES" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="mines-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <button class="back-to-signals-btn absolute top-4 right-4 text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+            رجوع --&gt;
+          </button>
+          <div class="absolute top-4 left-4 flex flex-col sm:flex-row gap-2">
+            <button class="open-video-btn text-white bg-[#c8102e] hover:bg-red-600 border border-amber-400/50 rounded-lg px-4 py-1.5 text-sm font-bold transition-all active:scale-95" data-videos-key="howToUse" data-game-key="mines">
+              كيفية استخدام المتنبئ
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-6 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="flex flex-col sm:flex-row gap-6 mb-6 w-full max-w-lg">
+            <div class="relative flex-1" data-select-id="grid-size">
+              <label class="block text-sm text-emerald-200 mb-1">حجم الشبكة</label>
+              <button class="custom-select-trigger w-full bg-[#061c14] border border-amber-500/40 rounded-xl p-3 flex justify-between items-center text-amber-200 font-bold">
+                <span class="selected-option">5x5</span><i class="fas fa-chevron-down text-xs text-amber-400"></i>
+              </button>
+              <div class="custom-select-options hidden absolute top-full left-0 right-0 mt-1 bg-[#072017] border border-amber-500/50 rounded-xl z-10 overflow-hidden shadow-xl">
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">3x3</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">4x4</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">5x5</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">6x6</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">7x7</div>
+              </div>
+            </div>
+            <div class="relative flex-1" data-select-id="mine-count">
+              <label class="block text-sm text-emerald-200 mb-1">عدد الألغام</label>
+              <button class="custom-select-trigger w-full bg-[#061c14] border border-amber-500/40 rounded-xl p-3 flex justify-between items-center text-amber-200 font-bold">
+                <span class="selected-option">3</span><i class="fas fa-chevron-down text-xs text-amber-400"></i>
+              </button>
+              <div class="custom-select-options hidden absolute top-full left-0 right-0 mt-1 bg-[#072017] border border-amber-500/50 rounded-xl z-10 overflow-y-auto max-h-48 shadow-xl">
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">1</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">2</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">3</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">4</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">5</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">6</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">7</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">10</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">15</div>
+              </div>
+            </div>
+          </div>
+          <div id="mines-grid-container" class="w-full max-w-md aspect-square mb-6"></div>
+          <p id="mines-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold p-2"></p>
+          <div id="mines-actions-initial" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="mines-get-bet-btn" class="btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="mines-get-signal-btn" class="flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="mines-get-another-btn" class="btn-morocco-primary hidden w-full max-w-md px-4 py-3 text-base rounded-xl active:scale-95">
+            الحصول على إشارة أخرى
+          </button>
+          <div id="mines-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Penalty Screen -->
+      <div id="game-screen-penalty" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Penalty"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "PENALTY" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="penalty-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "PENALTY" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="penalty-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <button class="back-to-signals-btn absolute top-4 right-4 text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+            رجوع --&gt;
+          </button>
+          <div class="absolute top-4 left-4 flex flex-col sm:flex-row gap-2">
+            <button class="open-video-btn text-white bg-[#c8102e] hover:bg-red-600 border border-amber-400/50 rounded-lg px-4 py-1.5 text-sm font-bold transition-all active:scale-95" data-videos-key="howToUse" data-game-key="penalty">
+              كيفية استخدام المتنبئ
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-6 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="relative w-full max-w-lg h-64 md:h-80 bg-emerald-950/50 rounded-t-xl mb-6">
+            <div class="penalty-gate-post absolute left-0 top-0 w-2.5 h-full rounded-t"></div>
+            <div class="penalty-gate-post absolute right-0 top-0 w-2.5 h-full rounded-t"></div>
+            <div class="penalty-gate-post absolute left-0 top-0 w-full h-2.5 rounded-t"></div>
+            <div data-zone="1" class="penalty-target-zone absolute top-5 left-5 w-16 h-16 md:w-20 md:h-20 rounded-full"></div>
+            <div data-zone="2" class="penalty-target-zone absolute top-5 right-5 w-16 h-16 md:w-20 md:h-20 rounded-full"></div>
+            <div data-zone="3" class="penalty-target-zone absolute top-5 left-1/2 -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full"></div>
+            <div data-zone="4" class="penalty-target-zone absolute bottom-4 left-5 w-16 h-16 md:w-20 md:h-20 rounded-full"></div>
+            <div data-zone="5" class="penalty-target-zone absolute bottom-4 right-5 w-16 h-16 md:w-20 md:h-20 rounded-full"></div>
+          </div>
+          <p id="penalty-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold px-2"></p>
+          <div id="penalty-actions-initial" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="penalty-get-bet-btn" class="btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="penalty-get-signal-btn" class="flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="penalty-start-new-game-btn" class="btn-morocco-primary hidden w-full max-w-md px-6 py-3 text-lg rounded-xl active:scale-95 mt-4">
+            بدء لعبة جديدة
+          </button>
+          <div id="penalty-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apple Screen -->
+      <div id="game-screen-apple" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Apple of Fortune"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "APPLE OF FORTUNE" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="apple-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "APPLE OF FORTUNE" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="apple-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <button class="back-to-signals-btn absolute top-4 right-4 text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+            رجوع --&gt;
+          </button>
+          <div class="absolute top-4 left-4 flex flex-col sm:flex-row gap-2">
+            <button class="open-video-btn text-white bg-[#c8102e] hover:bg-red-600 border border-amber-400/50 rounded-lg px-4 py-1.5 text-sm font-bold transition-all active:scale-95" data-videos-key="howToUse" data-game-key="apple">
+              كيفية استخدام المتنبئ
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-4 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="flex-grow flex items-center justify-center">
+            <p id="apple-signal-display" class="text-9xl font-mono font-bold text-center text-white">
+              #
+            </p>
+          </div>
+          <p id="apple-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold px-2"></p>
+          <div id="apple-actions-initial" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="apple-get-bet-btn" class="btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="apple-get-signal-btn" class="flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="apple-start-new-game-btn" class="btn-morocco-primary hidden w-full max-w-md px-6 py-3 text-lg rounded-xl active:scale-95 mt-4">
+            بدء لعبة جديدة
+          </button>
+          <div id="apple-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chicken Screen -->
+      <div id="game-screen-chicken" class="game-screen hidden flex-col items-center justify-center">
+        <div class="video-tutorial-section w-full p-4 morocco-panel rounded-2xl">
+          <div class="flex justify-start w-full mb-4">
+            <button class="back-to-signals-btn text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+              رجوع --&gt;
+            </button>
+          </div>
+          <h3 class="text-3xl font-bold text-center text-amber-300 mb-6">
+            أولاً، ابحث عن لعبة "Chicken Road"
+          </h3>
+          <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "CHICKEN ROAD" في الويب</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="chicken-find-game-web-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h4 class="text-center mb-2 text-lg text-emerald-200">كيفية العثور على "CHICKEN ROAD" في التطبيق</h4>
+              <div class="aspect-video bg-black border border-amber-500/40 rounded-xl overflow-hidden">
+                <iframe class="w-full h-full" id="chicken-find-game-app-iframe" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-8">
+            <button class="i-found-game-btn btn-morocco-primary px-8 py-3.5 text-lg rounded-xl active:scale-95">
+              لقد وجدت اللعبة
+            </button>
+          </div>
+        </div>
+        <div class="predictor-section hidden w-full relative min-h-[60vh] flex-col items-center justify-center morocco-panel rounded-2xl p-4 pt-16 pb-8">
+          <button class="back-to-signals-btn absolute top-4 right-4 text-amber-300 transition-colors bg-transparent border border-amber-400 rounded-lg px-4 py-1.5 text-sm font-bold hover:bg-amber-400 hover:text-black">
+            رجوع --&gt;
+          </button>
+          <div class="absolute top-4 left-4 flex flex-col sm:flex-row gap-2">
+            <button class="open-video-btn text-white bg-[#c8102e] hover:bg-red-600 border border-amber-400/50 rounded-lg px-4 py-1.5 text-sm font-bold transition-all active:scale-95" data-videos-key="howToUse" data-game-key="chicken">
+              كيفية استخدام المتنبئ
+            </button>
+          </div>
+          <h3 class="game-title text-3xl sm:text-4xl font-bold text-center text-amber-300 mb-4 px-12 sm:px-0 mt-8 sm:mt-0"></h3>
+          <div class="w-full flex justify-center mb-4">
+            <div class="relative w-full max-w-xs" data-select-id="chicken-difficulty">
+              <label class="block text-sm text-emerald-200 mb-1 text-center">الصعوبة</label>
+              <button class="custom-select-trigger w-full bg-[#061c14] border border-amber-500/40 rounded-xl p-3 flex justify-between items-center text-amber-200 font-bold">
+                <span class="selected-option">سهل</span><i class="fas fa-chevron-down text-xs text-amber-400"></i>
+              </button>
+              <div class="custom-select-options hidden absolute top-full left-0 right-0 mt-1 bg-[#072017] border border-amber-500/50 rounded-xl z-20 overflow-hidden shadow-xl">
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">سهل</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">متوسط</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">صعب</div>
+                <div class="p-2.5 cursor-pointer hover:bg-emerald-800/60">صعب جداً</div>
+              </div>
+            </div>
+          </div>
+          <div id="chicken-road-viewport" class="w-full h-24 relative rounded-xl border-y-4">
+            <div id="chicken-road-track" class="h-full relative flex items-center"></div>
+            <img id="chicken-icon" src="https://iili.io/FvIoXhg.webp" class="absolute h-16 w-16 top-1/2" alt="Chicken" />
+          </div>
+          <p id="chicken-bet-suggestion" class="bet-suggestion-text text-center text-amber-300 h-8 my-6 text-sm sm:text-xl font-bold px-2"></p>
+          <div id="chicken-actions-initial" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse w-full max-w-md">
+            <button id="chicken-get-bet-btn" class="btn-morocco-emerald flex-1 px-4 py-3 text-base rounded-xl active:scale-95">
+              الحصول على حجم الرهان
+            </button>
+            <button id="chicken-get-signal-btn" class="flex-1 px-4 py-3 text-base rounded-xl btn-disabled" disabled>
+              الحصول على إشارة
+            </button>
+          </div>
+          <button id="chicken-get-another-btn" class="btn-morocco-primary hidden w-full max-w-md px-4 py-3 text-base rounded-xl active:scale-95">
+            الحصول على إشارة أخرى
+          </button>
+          <div id="chicken-console" class="game-console w-full max-w-md border rounded-xl mt-6 p-3 font-mono text-xs overflow-y-auto">
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Access Modal -->
+  <div id="accessModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+    <div id="modalContainer" class="morocco-panel rounded-2xl p-6 md:p-8 w-full max-w-sm relative">
+      <button id="closeModalBtn" class="absolute top-3 left-4 text-emerald-300/60 hover:text-amber-300 text-3xl transition-colors">
+        ×
+      </button>
+      <div id="formContent" class="text-center">
+        <p class="blinking-red text-sm font-bold mb-4">// 3 رموز وصول متاحة لهذا اليوم</p>
+        <label for="accessCode" class="block text-xl font-bold text-amber-300 mb-4">اكتب رمز الوصول</label>
+        <input type="text" id="accessCode" name="accessCode" class="hacker-input w-full border rounded-xl p-3.5 text-center font-mono text-lg focus:outline-none transition-all" placeholder="رمز الوصول" />
+        <p id="errorMessage" class="text-red-400 h-5 mt-2 text-sm font-bold"></p>
+        <button id="validateBtn" class="btn-morocco-primary mt-4 w-full py-3 rounded-xl text-lg active:scale-95">
+          تحقق
+        </button>
+      </div>
+      <div id="statusContent" class="text-center hidden h-36 flex items-center justify-center">
+        <p id="statusText" class="text-2xl font-bold text-amber-300 animate-pulse"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div id="videoModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+    <div id="videoModalContainer" class="morocco-panel rounded-2xl w-full max-w-2xl relative">
+      <button id="closeVideoModalBtn" class="absolute -top-3 -left-3 text-black bg-amber-400 rounded-full h-9 w-9 flex items-center justify-center hover:bg-amber-300 text-2xl font-bold transition-colors z-10 shadow-lg">
+        ×
+      </button>
+      <h3 id="videoModalTitle" class="text-amber-300 font-bold text-xl p-4 text-center"></h3>
+      <div class="aspect-video bg-black">
+        <iframe id="youtube-player" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div id="video-navigation" class="p-3 flex justify-center items-center gap-4">
+        <button id="nextVideoBtn" class="text-amber-300 disabled:text-gray-600">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <span id="video-counter" class="text-sm text-emerald-200"></span>
+        <button id="prevVideoBtn" class="text-amber-300 disabled:text-gray-600">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promo Modal -->
+  <div id="promoModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 hidden z-[80]">
+    <div class="morocco-panel rounded-2xl p-6 w-full max-w-lg relative text-center">
+      <button id="closePromoModalBtn" class="absolute top-3 left-4 text-emerald-300/60 hover:text-amber-300 text-3xl transition-colors">
+        ×
+      </button>
+      <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-300 text-2xl">
+        <i class="fas fa-gift"></i>
+      </div>
+      <h2 class="text-2xl text-amber-300 mb-3 font-extrabold">عرض ملكي رائع!</h2>
+      <p class="text-emerald-50 mb-6 leading-relaxed">
+        لدينا عرض رائع على شكل عجلة الحظ! يمكنك الفوز بجوائز نقدية لبطاقتك، ووصول خاص، ومكافآت، إلخ! لتلقي الرموز الخاصة، اكتب كلمة <span class="text-amber-300 font-mono font-bold">"WHEEL999"</span> لي للحصول على تعليمات حول كيفية الحصول على رمز خاص!
+      </p>
+      <button id="openLotteryFromPromoBtn" class="shimmer-btn rounded-xl px-8 py-3.5 text-lg">
+        <i class="fas fa-star ml-2"></i>الذهاب إلى عجلة الحظ
+      </button>
+    </div>
+  </div>
+
+  <!-- Lottery Modal -->
+  <div id="lotteryModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 hidden z-[60]">
+    <div class="morocco-panel rounded-2xl p-4 sm:p-6 md:p-8 w-full max-w-md sm:max-w-lg md:max-w-xl relative text-center overflow-hidden">
+      <canvas id="confettiCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-20"></canvas>
+      <button id="closeLotteryModalBtn" class="absolute top-3 left-4 text-emerald-300/60 hover:text-amber-300 text-3xl transition-colors z-10">
+        ×
+      </button>
+      <h2 class="text-3xl text-amber-300 mb-4 font-extrabold gold-glow-text">
+        عجلة الحظ الملكية
+      </h2>
+      <div id="wheel-container" class="relative w-full max-w-[300px] sm:max-w-[380px] aspect-square mx-auto my-4 flex items-center justify-center">
+        <div id="wheel-pointer" class="absolute"></div>
+        <canvas id="wheelCanvas"></canvas>
+      </div>
+      <div id="lottery-controls" class="flex flex-col items-center">
+        <label for="lotteryCode" class="block text-lg mb-2 text-emerald-100">أدخل الرمز الخاص بك</label>
+        <input type="text" id="lotteryCode" class="hacker-input w-full max-w-xs mx-auto border rounded-xl p-3 text-center font-mono focus:outline-none transition-all" />
+        <p id="lotteryErrorMessage" class="text-red-400 h-5 mt-2 text-sm font-bold"></p>
+        <div class="mt-4 w-full max-w-xs mx-auto flex gap-2">
+          <button id="spinBtn" class="btn-morocco-primary flex-grow px-6 py-3 text-lg rounded-xl active:scale-95">
+            أدر العجلة
+          </button>
+          <button id="infoBtn" class="btn-morocco-emerald px-5 py-3 text-lg rounded-xl active:scale-95">
+            <i class="fas fa-info"></i>
+          </button>
+        </div>
+      </div>
+      <div id="lottery-result" class="hidden min-h-[148px] flex flex-col items-center justify-center">
+        <p class="text-lg text-emerald-200">تهانينا! لقد فزت بـ:</p>
+        <p id="lotteryResultText" class="text-2xl sm:text-3xl text-amber-300 font-extrabold mt-2"></p>
+        <p class="text-lg mt-2 blinking-text font-bold">
+          اكتب لي ما فزت به للحصول عليه
+        </p>
+        <button id="spinAgainBtn" class="mt-4 w-full max-w-xs mx-auto bg-emerald-950 border border-amber-400/50 text-amber-300 px-6 py-2.5 text-base hover:bg-emerald-900 transition-all active:scale-95 rounded-xl font-bold">
+          أدر مرة أخرى
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Modal -->
+  <div id="infoModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 hidden z-[70]">
+    <div class="morocco-panel rounded-2xl p-6 w-full max-w-lg relative">
+      <button id="closeInfoModalBtn" class="absolute top-3 left-4 text-emerald-300/60 hover:text-amber-300 text-3xl transition-colors">
+        ×
+      </button>
+      <h2 class="text-2xl text-amber-300 mb-6 font-extrabold text-center">
+        معلومات الجائزة
+      </h2>
+      <h3 class="text-lg text-emerald-300 font-bold mb-2">معدلات إسقاط الجوائز:</h3>
+      <ol class="list-decimal list-inside text-emerald-50 space-y-1.5" dir="rtl">
+        <li>إشارات خاصة من مدير الموقع: بنسبة 5%</li>
+        <li>مبلغ 100 دولار إلى بطاقتك: بنسبة 5%</li>
+        <li>وصول إلى قسم توقعات VIP: بنسبة 15%</li>
+        <li>وصول إلى قسم توقعات السلوتس: بنسبة 15%</li>
+        <li>مكافأة على الإيداع بنسبة ‎100%: بنسبة 20%</li>
+        <li>مكافأة على الإيداع بنسبة ‎50%: بنسبة 20%</li>
+        <li>لا شيء: بنسبة 20%</li>
+      </ol>
+      <h3 class="text-lg text-emerald-300 font-bold mt-6 mb-2">كيف تحصل على "رمز خاص"؟</h3>
+      <p class="text-emerald-50">
+        لتلقي رموز جديدة لـ WHEEL OF FORTUNE، تحتاج إلى كتابة "WHEEL999" في الدردشة معي والحصول على تعليمات حول كيفية كسب رمز جديد.
+      </p>
+      <p class="text-amber-300/80 text-sm mt-1">يمكن استخدام الرمز مرة واحدة فقط.</p>
+      <h3 class="text-lg text-emerald-300 font-bold mt-6 mb-2">كيف تطالب بجائزتك؟</h3>
+      <p class="text-emerald-50">
+        للمطالبة بجائزتك، يجب أن تكتب لي وترسل لقطة شاشة لما فزت به. لا تحاول الغش، فأنا أتحقق من كل شيء في النظام والسجلات.
+      </p>
+    </div>
+  </div>
+
+  <!-- Live Chat -->
+  <div id="chat-overlay" class="fixed inset-0 bg-black/65 z-40 hidden"></div>
+  <div class="fixed bottom-5 left-5 z-50">
+    <button id="chat-toggle-btn" class="w-16 h-16 btn-morocco-primary rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform relative">
+      <i class="fas fa-comments text-2xl"></i>
+      <span class="absolute top-0 right-0 w-4 h-4 bg-[#c8102e] border-2 border-[#051610] rounded-full"></span>
+    </button>
+    <div id="chat-widget" class="hidden absolute bottom-20 left-0 w-80 sm:w-96 h-[500px] morocco-panel rounded-2xl flex flex-col overflow-hidden">
+      <div class="p-3.5 flex justify-between items-center border-b border-amber-500/30 bg-emerald-950/60">
+        <h3 class="text-lg font-bold text-amber-300">// دردشة مباشرة //</h3>
+        <button id="chat-close-btn" class="text-emerald-300 hover:text-amber-300">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="chat-messages" class="flex-1 p-3.5 overflow-y-auto space-y-3"></div>
+      <div class="p-3 border-t border-amber-500/30 bg-emerald-950/60">
+        <div class="flex gap-2">
+          <input type="text" id="chat-input" class="hacker-input flex-1 border rounded-xl px-3 py-2 text-sm focus:outline-none" placeholder="رسالتك..." />
+          <button id="chat-send-btn" class="btn-morocco-primary px-4 py-2 rounded-xl text-sm active:scale-95">
+            إرسال
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const SCRIPT_BODY = () => {
+        const FEATURE_FLAGS = {
+          enableLottery: true,
+          enableBetStep: true,
+        };
+        const prizes = [
+          {
+            text: 'الدخول إلى "VIP"',
+            color: "#065f46",
+            textColor: "#FDE68A",
+            animatedBorder: false,
+            specialCode: "",
+          },
+          {
+            text: "+100% إلى إيداعك",
+            color: "#991b1b",
+            textColor: "#FFFFFF",
+            animatedBorder: false,
+            specialCode: "",
+          },
+          {
+            text: "100 دولار لك",
+            color: "#d4af37",
+            textColor: "#051610",
+            animatedBorder: true,
+            specialCode: "CASH",
+          },
+          {
+            text: "لا شيء",
+            color: "#1f2937",
+            textColor: "#D1D5DB",
+            animatedBorder: false,
+            specialCode: "25#5",
+          },
+          {
+            text: 'الوصول إلى قسم "SLOT"',
+            color: "#047857",
+            textColor: "#FFFFFF",
+            animatedBorder: false,
+            specialCode: "",
+          },
+          {
+            text: "لا شيء",
+            color: "#1f2937",
+            textColor: "#D1D5DB",
+            animatedBorder: false,
+            specialCode: "",
+          },
+          {
+            text: "إشارات من الإدارة",
+            color: "#f59e0b",
+            textColor: "#051610",
+            animatedBorder: true,
+            specialCode: "74@6",
+          },
+        ];
+        const lotteryCodes = {
+          CASH: 2,
+          "25#5": 3,
+          "74@6": 6,
+        };
+        const CUSTOM_CONFIG = {
+          currency: "MAD",
+          minBet: "40",
+          maxBet: "100",
+          winnerMultiplier: "2",
+          vipLink: "https://t.me/youssef_predictor_bot",
+        };
+        const CARDS_CONFIG = [
+          {
+            id: "vip",
+            title: "VIP AI PREDICTOR",
+            image: "https://iili.io/KOce6qG.png",
+            showFindGame: true,
+          },
+          {
+            id: "aviator",
+            title: "Aviator AI PREDICTOR",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqBdX8SuaC1Ws7ZYuCVQstQ4qRi9A_3SWujg&s",
+            showFindGame: true,
+          },
+          {
+            id: "mines",
+            title: "Mines AI PREDICTOR",
+            image: "https://rotativka.com/en/wp-content/uploads/sites/3/2021/06/Mines-Demo.jpg",
+            showFindGame: true,
+          },
+          {
+            id: "penalty",
+            title: "Penalty AI PREDICTOR",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThYP5CGxc52hWd4ToMHI8MIJhun5BEjHh5LQ&s",
+            showFindGame: true,
+          },
+          {
+            id: "apple",
+            title: "Apple of Fortune AI PREDICTOR",
+            image: "https://play-lh.googleusercontent.com/ezAY-TvV3PlhYWLs8k8czRjWWSdBwFtPrw72fNpS8p6wByC0xBG-Dgt0K5ojieZXrg",
+            showFindGame: true,
+          },
+          {
+            id: "chicken",
+            title: "Chicken Road AI PREDICTOR",
+            image: "https://cdn6.aptoide.com/imgs/1/0/2/1023a04c18a7a91673200703af12a58f_icon.png",
+            showFindGame: true,
+          },
+          {
+            id: "slot-0",
+            title: "Coin Craze Jackpot PREDICTOR",
+            image: "https://play-fortune.pl/wp-content/uploads/2025/09/Coin-Craze-Jackpot-slot.webp",
+            showFindGame: false,
+          },
+          {
+            id: "slot-1",
+            title: "Royalty of Olympus PREDICTOR",
+            image: "https://cdn2.softswiss.net/i/s3/barbarabang/RoyaltyofOlympus.webp",
+            showFindGame: false,
+          },
+        ];
+        const VIDEO_CONFIG = {
+          aviator: {
+            findGame: [
+              { url: "https://www.youtube.com/embed/Xo9UJzWElcw" },
+              { url: "https://youtube.com/embed/b9ywYR04jIc" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/R9oKm-Yy2h8" }],
+          },
+          mines: {
+            findGame: [
+              { url: "https://youtube.com/embed/dwk4_Jt57WQ" },
+              { url: "https://youtube.com/embed/Qf-3Hrfz7Yo" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/YnbZbhfRpIo" }],
+          },
+          penalty: {
+            findGame: [
+              { url: "https://youtube.com/embed/x1A-vW363EU" },
+              { url: "https://youtube.com/embed/33O1eitDGL0" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/JSOkZujumoM" }],
+          },
+          apple: {
+            findGame: [
+              { url: "https://youtube.com/embed/w8n0ZN05ZUI" },
+              { url: "https://youtube.com/embed/_4Fo6q9-8Qw" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/5qRmvocIM8Q" }],
+          },
+          chicken: {
+            findGame: [
+              { url: "https://youtube.com/embed/QtTSfWU27Ok" },
+              { url: "https://youtube.com/embed/8yaJZQ11oHM" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/7pu_wBdoxwg" }],
+          },
+          slot: {
+            findGame: [
+              { url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+              { url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+            ],
+            howToUse: [{ url: "https://www.youtube.com/embed/dQw4w9WgXcQ" }],
+          },
+        };
+
+        const T = {
+          pageTitle: "متنبئ الذكاء الاصطناعي",
+          mainTitle: "متنبئ الذكاء الاصطناعي",
+          mainButton: "الحصول على إشارات الذكاء الاصطناعي",
+          topWinners: "// طلابي //",
+          availableSignals: "// إشارات الذكاء الاصطناعي //",
+          logoutButton: "تسجيل الخروج",
+          activateButton: "تفعيل",
+          backButton: "رجوع -->",
+          getBetButton: "الحصول على حجم الرهان",
+          getSignalButton: "الحصول على إشارة",
+          getAnotherButton: "الحصول على إشارة أخرى",
+          startNewGame: "بدء لعبة جديدة",
+          howToUse: "كيفية استخدام المتنبئ",
+          howToFindGame: "كيفية العثور على اللعبة",
+          modalCodesAvailable: "// 3 رموز وصول متاحة لهذا اليوم",
+          modalTypeCode: "اكتب رمز الوصول",
+          modalPlaceholder: "رمز الوصول",
+          modalValidateButton: "تحقق",
+          analyzingData: "جاري تحليل البيانات...",
+          accessDenied: "تم رفض الوصول. الرمز غير صالح.",
+          decryptingSignals: "جاري فك تشفير الإشارات...",
+          accessGranted: "تم منح الوصول",
+          betSuggestion: "راهن بمبلغ يتراوح بين {minBet} {currency} و {maxBet} {currency}",
+          signalRevealed: "إشارة الذكاء الاصطناعي: تم الكشف عن 5 خلايا آمنة",
+          signalTargetZone: "إشارة الذكاء الاصطناعي: المنطقة المستهدفة {zone}",
+          signalTargetZoneWithCount: "إشارة الذكاء الاصطناعي: المنطقة المستهدفة {zone} ({count} إشارات متبقية)",
+          signalSelectRow: "إشارة الذكاء الاصطناعي: اختر رقم الصف {finalSignal}",
+          signalSelectRowWithCount: "إشارة الذكاء الاصطناعي: اختر رقم الصف {finalSignal} ({count} إشارات متبقية)",
+          signalClickGo: 'إشارة الذكاء الاصطناعي: انقر على "انطلق" {signalSteps} مرات',
+          chatTitle: "// دردشة مباشرة //",
+          chatPlaceholder: "رسالتك...",
+          chatSendButton: "إرسال",
+          chatLimitReached: "تم الوصول إلى حد الرسائل",
+          signalsPerSec: "إشارات/ثانية:",
+          successRate: "معدل النجاح:",
+          needAnotherCode: "تحتاج إلى رمز وصول آخر",
+          gridSize: "حجم الشبكة",
+          mineCount: "عدد الألغام",
+          difficulty: "الصعوبة",
+          loadingData: "// جاري تحميل البيانات... //",
+          videoOf: "فيديو {current} من {total}",
+          betConsoleMessages: [
+            "جاري الاتصال بتدفق البيانات...",
+            "جاري تحليل تقلبات السوق...",
+            "جاري حساب نسبة المخاطرة إلى المكافأة...",
+            "جاري تشغيل النموذج التنبؤي v3.4...",
+            "جاري تحديد حجم الرهان...",
+            "نجاح: تم حساب معلمات الرهان.",
+          ],
+          aviatorSignalConsoleMessages: [
+            "بدء تحليل مسار الطيران...",
+            "معالجة متجهات الخروج في الوقت الفعلي...",
+            "المعايرة لتباين الغلاف الجوي...",
+            "مقارنة البيانات التاريخية...",
+            "تثبيت الإشارة...",
+            "نجاح: تم الحصول على إشارة المضاعف.",
+          ],
+          minesSignalConsoleMessages: [
+            "بدء تشغيل ماسح الشبكة...",
+            "تخطيط مصفوفة الاحتمالات...",
+            "تنفيذ فحص التشابك الكمي...",
+            "تحديد مجموعات الخلايا منخفضة المخاطر...",
+            "عزل المسار الآمن...",
+            "نجاح: تم تحديد 5 خلايا آمنة.",
+          ],
+          penaltySignalConsoleMessages: [
+            "الوصول إلى الأنماط العصبية لحارس المرمى...",
+            "حساب احتمالات مسار التسديدة...",
+            "تحليل ظروف الرياح والميدان...",
+            "تحديد أضعف نقطة دفاعية...",
+            "تم تحديد الهدف...",
+            "نجاح: تم التنبؤ بمنطقة التسديد المثلى.",
+          ],
+          appleSignalConsoleMessages: [
+            "بدء خوارزمية الحظ...",
+            "مسح شجرة الاحتمالات...",
+            "المزامنة مع مولد الأرقام العشوائية الكمي...",
+            "تحليل أنماط الحظ القديمة...",
+            "جني النتيجة...",
+            "نجاح: تم تحديد النتيجة المحظوظة.",
+          ],
+          chickenSignalConsoleMessages: [
+            "تحليل أنماط سلوك الدجاج...",
+            "حساب المسار الأمثل...",
+            "تجنب عقبات المزرعة...",
+            "التنبؤ بحركات الثعلب...",
+            "عبور الطريق...",
+            "نجاح: تم تحديد المسار الآمن.",
+          ],
+          slotSignalConsoleMessages: [
+            "بدء خوارزمية Slot v2.1...",
+            "تحليل احتمالات البكرات...",
+            "حساب تردد تشغيل المكافأة...",
+            "مقارنة بيانات RTP...",
+            "تثبيت عدد الدورات...",
+            "نجاح: تم الحصول على عدد الدورات الأمثل للمكافأة.",
+          ],
+          fakeMessages: [
+            "من جرب ضربات الجزاء؟ أي حظ",
+            "أفياتور نار اليوم، حصلت على 5x بالفعل!!",
+            "هل هناك أي رموز ترويجية يا شباب؟؟",
+            "هل هذا شرعي حتى؟ يبدو مشبوهاً",
+            "يا مسؤول أضف إشارات Lucky Jet من فضلك",
+            "لعبة الألغام رائعة، فقط لا تكن طماعًا",
+            "هل يبيع أحد حسابًا؟ سأشتري",
+            "لا أستطيع فهم طريق الدجاجة، أي دليل؟",
+            "هذا أفضل متنبئ رأيته على الإطلاق",
+            "تحية للشاكين، ضاعفت رصيدي الليلة",
+            "لماذا لا يعمل رمز الوصول الخاص بي",
+            "تفاحة الحظ قوية جدًا",
+            "سحبت 100$ للتو، شكرًا للذكاء الاصطناعي",
+            "هذا يبدو وكأنه غش هههه",
+            "ما هو معدل النجاح لديكم اليوم يا شباب",
+            "ضربات الجزاء أخطأت واحدة معي لكن ما زلت رابحًا",
+            "تذكروا إدارة المخاطر يا جماعة",
+            "اللعنة، كنت على بعد خطوة واحدة في الألغام...",
+            "الدردشة تتحرك بسرعة كبيرة",
+            "هل هناك مجموعة VIP؟",
+            "هههههه أحدهم يبكي في الزاوية",
+            "فقط اتبع الإشارة ولا تفكر كثيرًا",
+            "إنها تعمل. ببساطة.",
+            "صديقي أخبرني عن هذا الموقع بالأمس",
+            "كم عدد الإشارات في اليوم؟",
+            "أنا جديد هنا، ما الأمر؟",
+            "أخيرًا أداة تعمل بالفعل",
+            "أحتاج إلى المزيد من رموز الوصول",
+            "وصلت للتو إلى 10x في أفياتور، هيا بنااا",
+            "هل هذا الشيء آمن للاستخدام؟",
+            "يبدو الخادم بطيئًا بعض الشيء اليوم",
+            "هههههه خسرت كل شيء، كن حذرًا",
+            "صرفت 50 دولارًا، ليست سيئة كبداية",
+            "واجهة المستخدم رائعة جدًا، أشعر وكأنني في فيلم",
+            "اللعنة، كان يجب أن أتوقف مبكرًا",
+            "هل يوجد أحد من المغرب هنا؟",
+            "نظام رمز الوصول ذكي",
+            "من هو المسؤول هنا؟ لدي سؤال",
+            "هذا أفضل بكثير من قنوات تيليجرام الاحتيالية",
+            "طريق الدجاجة لا يقدر بثمن هههه، إنه ممتع",
+            "في انتظار الإشارة التالية...",
+            "سأراهن بكل شيء، تمنوا لي الحظ",
+            "هل يمكنني استخدام هذا على هاتفي؟",
+            "قلبي يتسارع في كل مرة ألعب فيها الألغام",
+            "يجب أن يكون الذكاء الاصطناعي مجنونًا للتنبؤ بهذا",
+          ],
+          qaPairs: [
+            { q: "هل هذا مجاني؟", a: "نعم الإشارات مجانية حاليًا" },
+            { q: "كيف أحصل على رمز وصول جديد؟", a: "أعتقد أنها تتجدد يوميًا" },
+            { q: "هل جرب أحد تفاحة الحظ؟ هل هي مربحة؟", a: "إنها كذلك ولكن المخاطرة عالية" },
+            { q: "صديقي لا يستطيع الدخول، هل الموقع معطل؟", a: "يعمل معي، ربما جرب VPN" },
+            { q: "ماذا يحدث إذا خسرت؟", a: "إنه جزء من اللعبة يا رجل، لا تراهن بأكثر مما تستطيع خسارته" },
+            { q: "هل يمكن حظري لاستخدام هذا؟", a: "لا، إنه مجرد متنبئ وليس اختراقًا" },
+            { q: "أي نصائح للألغام؟", a: "نعم، ابدأ برهانات صغيرة ولا تكن طماعًا" },
+            { q: "ما هي أفضل استراتيجية لضربات الجزاء؟", a: "انتظر الإشارات ذات الاحتمالية العالية، لا تستعجل" },
+            { q: "ما مدى دقة هذا الشيء حقًا", a: "جيد جدًا بالنسبة لي، حوالي 8/10 انتصارات" },
+            { q: "هل يوجد تطبيق لهذا؟", a: "ليس بعد، لكن الموقع يعمل بشكل جيد على الهاتف المحمول" },
+            { q: "لماذا تم حظر رسالتي؟", a: "أعتقد أن المستخدمين الجدد لديهم حد لمنع البريد العشوائي" },
+          ],
+          userReplies: [
+            'مرحبًا <span class="font-bold text-amber-300">@{username}</span> فقط حاول وتدرب وستعتاد على الأمر',
+            '<span class="font-bold text-amber-300">@{username}</span> لا توجد استراتيجية واحدة، الذكاء الاصطناعي يتكيف دائمًا، فقط شاهد وتعلم',
+          ],
+        };
+
+        function generateAndInsertSlotCards() {
+          const slotConfigs = CARDS_CONFIG.filter((c) => c.id.startsWith("slot-"));
+          if (slotConfigs.length === 0) return;
+
+          let slotsHtml = "";
+          slotConfigs.forEach((slot, index) => {
+            slotsHtml += `
+              <div class="signal-card locked-card rounded-xl overflow-hidden flex flex-col border-amber-400/40" data-card-type="slot" data-game="${slot.id}">
+                <div class="w-full h-48 overflow-hidden relative">
+                  <img src="${slot.image}" alt="${slot.title}" class="card-image w-full h-full object-cover transition-all duration-300"/>
+                  <div class="banner-container absolute inset-0 flex items-center justify-center">
+                    <div class="absolute w-[150%] bg-[#c8102e] text-white text-center font-bold py-2 rotate-12 text-sm shadow-lg border-y border-amber-300/50">
+                      ${T.needAnotherCode}
+                    </div>
+                  </div>
+                </div>
+                <div class="p-4 flex flex-col flex-grow text-center">
+                  <h3 class="card-title text-lg font-bold mb-2 flex-grow text-amber-300">
+                    ${slot.title}
+                  </h3>
+                  <p id="stats-slot-${index}" class="text-sm text-emerald-100/80 mb-4 font-mono leading-tight">
+                    ${T.loadingData}
+                  </p>
+                  <button class="w-full mt-auto bg-gray-800 text-gray-500 rounded-lg px-4 py-2.5 cursor-not-allowed font-bold" disabled>
+                    ${T.activateButton}
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+
+          const vipCard = document.querySelector('[data-card-type="vip"]');
+          if (vipCard) {
+            vipCard.insertAdjacentHTML("afterend", slotsHtml);
+          }
+        }
+
+        function applyCardConfigs() {
+          const staticConfigs = CARDS_CONFIG.filter((c) => !c.id.startsWith("slot-"));
+          staticConfigs.forEach((config) => {
+            const card = document.querySelector(`.signal-card[data-game="${config.id}"]`);
+            if (card) {
+              const titleEl = card.querySelector(".card-title");
+              const imageEl = card.querySelector(".card-image");
+              if (titleEl) titleEl.textContent = config.title;
+              if (imageEl) {
+                imageEl.src = config.image;
+                imageEl.alt = config.title;
+              }
+            }
+          });
+
+          const vipLink = document.getElementById("vip-send-message-link");
+          if (vipLink && CUSTOM_CONFIG.vipLink) {
+            vipLink.href = CUSTOM_CONFIG.vipLink;
+          }
+        }
+
+        function applyVideoConfigs() {
+          for (const gameKey in VIDEO_CONFIG) {
+            const gameVideos = VIDEO_CONFIG[gameKey];
+            if (gameVideos.findGame && gameVideos.findGame.length > 0) {
+              const webIframe = document.getElementById(`${gameKey}-find-game-web-iframe`);
+              if (webIframe && gameVideos.findGame[0]) {
+                webIframe.src = gameVideos.findGame[0].url;
+              }
+              const appIframe = document.getElementById(`${gameKey}-find-game-app-iframe`);
+              if (appIframe && gameVideos.findGame[1]) {
+                appIframe.src = gameVideos.findGame[1].url;
+              }
+            }
+          }
+        }
+
+        const mainContent = document.getElementById("main-content"),
+          appContainer = document.getElementById("app-container"),
+          signalsSection = document.getElementById("signals-section"),
+          gameView = document.getElementById("game-view"),
+          openModalBtn = document.getElementById("openModalBtn"),
+          accessModal = document.getElementById("accessModal"),
+          modalContainer = document.getElementById("modalContainer"),
+          closeModalBtn = document.getElementById("closeModalBtn"),
+          accessCodeInput = document.getElementById("accessCode"),
+          validateBtn = document.getElementById("validateBtn"),
+          formContent = document.getElementById("formContent"),
+          statusContent = document.getElementById("statusContent"),
+          statusText = document.getElementById("statusText"),
+          errorMessage = document.getElementById("errorMessage"),
+          chatToggleBtn = document.getElementById("chat-toggle-btn"),
+          chatCloseBtn = document.getElementById("chat-close-btn"),
+          chatWidget = document.getElementById("chat-widget"),
+          chatOverlay = document.getElementById("chat-overlay"),
+          chatMessages = document.getElementById("chat-messages"),
+          chatInput = document.getElementById("chat-input"),
+          chatSendBtn = document.getElementById("chat-send-btn"),
+          logoutBtn = document.getElementById("logoutBtn");
+        let chatInterval;
+
+        const aviatorMultiplier = document.getElementById("aviator-multiplier"),
+          aviatorBetSuggestion = document.getElementById("aviator-bet-suggestion"),
+          aviatorGetBetBtn = document.getElementById("aviator-get-bet-btn"),
+          aviatorGetSignalBtn = document.getElementById("aviator-get-signal-btn"),
+          aviatorActionsInitial = document.getElementById("aviator-actions-initial"),
+          aviatorGetAnotherBtn = document.getElementById("aviator-get-another-btn"),
+          aviatorConsoleOutput = document.getElementById("aviator-console");
+        let aviatorSignalCount = parseInt(localStorage.getItem("aviatorSignalCount")) || 0,
+          multiplierAnimation;
+
+        const minesGridContainer = document.getElementById("mines-grid-container"),
+          minesBetSuggestion = document.getElementById("mines-bet-suggestion"),
+          minesGetBetBtn = document.getElementById("mines-get-bet-btn"),
+          minesGetSignalBtn = document.getElementById("mines-get-signal-btn"),
+          minesActionsInitial = document.getElementById("mines-actions-initial"),
+          minesGetAnotherBtn = document.getElementById("mines-get-another-btn"),
+          minesConsoleOutput = document.getElementById("mines-console");
+        let minesState = { gridSize: 5, mineCount: 3 };
+
+        const penaltyTargetZones = document.getElementById("game-screen-penalty").querySelectorAll(".penalty-target-zone"),
+          penaltyBetSuggestion = document.getElementById("penalty-bet-suggestion"),
+          penaltyGetBetBtn = document.getElementById("penalty-get-bet-btn"),
+          penaltyGetSignalBtn = document.getElementById("penalty-get-signal-btn"),
+          penaltyActionsInitial = document.getElementById("penalty-actions-initial"),
+          penaltyStartNewGameBtn = document.getElementById("penalty-start-new-game-btn"),
+          penaltyConsoleOutput = document.getElementById("penalty-console");
+        let penaltySignalCountInRound = 0;
+
+        const appleSignalDisplay = document.getElementById("apple-signal-display"),
+          appleBetSuggestion = document.getElementById("apple-bet-suggestion"),
+          appleGetBetBtn = document.getElementById("apple-get-bet-btn"),
+          appleGetSignalBtn = document.getElementById("apple-get-signal-btn"),
+          appleActionsInitial = document.getElementById("apple-actions-initial"),
+          appleStartNewGameBtn = document.getElementById("apple-start-new-game-btn"),
+          appleConsoleOutput = document.getElementById("apple-console");
+        let appleSignalCountInRound = 0;
+
+        const chickenIcon = document.getElementById("chicken-icon"),
+          chickenRoadTrack = document.getElementById("chicken-road-track"),
+          chickenBetSuggestion = document.getElementById("chicken-bet-suggestion"),
+          chickenGetBetBtn = document.getElementById("chicken-get-bet-btn"),
+          chickenGetSignalBtn = document.getElementById("chicken-get-signal-btn"),
+          chickenActionsInitial = document.getElementById("chicken-actions-initial"),
+          chickenGetAnotherBtn = document.getElementById("chicken-get-another-btn"),
+          chickenConsoleOutput = document.getElementById("chicken-console");
+        let chickenState = { difficulty: "Easy", currentStep: 0 };
+        const STOVE_WIDTH = 128;
+
+        generateAndInsertSlotCards();
+        applyCardConfigs();
+        applyVideoConfigs();
+
+        if (!FEATURE_FLAGS.enableLottery) {
+          const lotteryBtn = document.getElementById("lotteryBtn");
+          if (lotteryBtn) lotteryBtn.style.display = "none";
+        }
+
+        function applyUnlocks() {
+          const vipUnlocked = localStorage.getItem("vipUnlocked") === "true";
+          const slotUnlocked = localStorage.getItem("slotUnlocked") === "true";
+
+          const vipCard = document.querySelector('[data-card-type="vip"]');
+          if (vipCard && vipUnlocked) {
+            vipCard.classList.remove("locked-card");
+            const bannerContainer = vipCard.querySelector(".banner-container");
+            if (bannerContainer) bannerContainer.remove();
+            const button = vipCard.querySelector("button");
+            button.disabled = false;
+            button.className = "btn-morocco-primary w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95 activate-btn";
+            button.textContent = "دخول VIP";
+          }
+
+          const slotCards = document.querySelectorAll('[data-card-type="slot"]');
+          slotCards.forEach((slotCard) => {
+            if (slotCard && slotUnlocked) {
+              slotCard.classList.remove("locked-card");
+              const bannerContainer = slotCard.querySelector(".banner-container");
+              if (bannerContainer) bannerContainer.remove();
+              const button = slotCard.querySelector("button");
+              button.disabled = false;
+              button.className = "btn-morocco-primary w-full mt-auto rounded-lg px-4 py-2.5 active:scale-95 activate-btn";
+              button.textContent = T.activateButton;
+            }
+          });
+        }
+
+        function checkAccessSession() {
+          const e = localStorage.getItem("accessGrantedTimestamp");
+          if (e) {
+            const t = new Date().getTime();
+            if (t - parseInt(e) < 144e5) {
+              mainContent.classList.add("hidden");
+              appContainer.classList.remove("hidden");
+              applyUnlocks();
+              if (!sessionStorage.getItem("promoShownThisSession")) {
+                setTimeout(() => {
+                  showPromoModal();
+                  sessionStorage.setItem("promoShownThisSession", "true");
+                }, 1000);
+              }
+              startPromoInterval();
+            } else {
+              localStorage.removeItem("accessGrantedTimestamp");
+              localStorage.removeItem("vipUnlocked");
+              localStorage.removeItem("slotUnlocked");
+              sessionStorage.removeItem("promoShownThisSession");
+              mainContent.classList.remove("hidden");
+              appContainer.classList.add("hidden");
+            }
+          } else {
+            mainContent.classList.remove("hidden");
+            appContainer.classList.add("hidden");
+          }
+        }
+
+        const handleValidation = () => {
+          const code = accessCodeInput.value.trim();
+          let accessGranted = false;
+
+          localStorage.removeItem("vipUnlocked");
+          localStorage.removeItem("slotUnlocked");
+
+          if (code === "1337") {
+            localStorage.setItem("slotUnlocked", "true");
+            accessGranted = true;
+          } else if (code === "8564") {
+            localStorage.setItem("vipUnlocked", "true");
+            accessGranted = true;
+          } else if (code === "2282") {
+            accessGranted = true;
+          }
+
+          if (accessGranted) {
+            localStorage.setItem("accessGrantedTimestamp", new Date().getTime().toString());
+            formContent.classList.add("hidden");
+            statusContent.classList.remove("hidden");
+            statusText.textContent = T.decryptingSignals;
+            setTimeout(() => {
+              statusText.textContent = T.accessGranted;
+              statusText.classList.remove("animate-pulse");
+              setTimeout(() => {
+                closeModal();
+                mainContent.classList.add("hidden");
+                appContainer.classList.remove("hidden");
+                applyUnlocks();
+                if (!sessionStorage.getItem("promoShownThisSession")) {
+                  showPromoModal();
+                  sessionStorage.setItem("promoShownThisSession", "true");
+                }
+                startPromoInterval();
+              }, 1000);
+            }, 2500);
+          } else {
+            errorMessage.textContent = T.accessDenied;
+            accessCodeInput.value = "";
+            modalContainer.classList.add("shake");
+            setTimeout(() => modalContainer.classList.remove("shake"), 500);
+          }
+        };
+
+        const openModal = () => {
+          accessModal.classList.remove("hidden");
+          setTimeout(() => accessCodeInput.focus(), 50);
+        };
+        const closeModal = () => {
+          accessModal.classList.add("hidden");
+          setTimeout(() => {
+            formContent.classList.remove("hidden");
+            statusContent.classList.add("hidden");
+            statusText.classList.add("animate-pulse");
+            errorMessage.textContent = "";
+            accessCodeInput.value = "";
+          }, 300);
+        };
+
+        function showGameView(gameId) {
+          signalsSection.classList.add("hidden");
+          gameView.classList.remove("hidden");
+          document.querySelectorAll(".game-screen").forEach((t) => t.classList.add("hidden"));
+
+          const cardConfig = CARDS_CONFIG.find((c) => c.id === gameId);
+          if (!cardConfig) {
+            showSignalsView();
+            return;
+          }
+
+          const gameScreenId = gameId.startsWith("slot-") ? "game-screen-slot" : `game-screen-${gameId}`;
+          const gameScreen = document.getElementById(gameScreenId);
+
+          if (gameScreen) {
+            const gameTitleEl = gameScreen.querySelector(".game-title");
+            if (gameTitleEl) gameTitleEl.textContent = cardConfig.title;
+
+            gameScreen.classList.remove("hidden");
+            gameScreen.classList.add("flex");
+
+            const videoSection = gameScreen.querySelector(".video-tutorial-section");
+            const predictorSection = gameScreen.querySelector(".predictor-section");
+            const showFindGameTutorial = cardConfig.showFindGame !== false;
+
+            if (videoSection && predictorSection) {
+              if (showFindGameTutorial) {
+                videoSection.classList.remove("hidden");
+                predictorSection.classList.add("hidden");
+              } else {
+                videoSection.classList.add("hidden");
+                predictorSection.classList.remove("hidden");
+                predictorSection.classList.add("flex");
+              }
+            } else if (predictorSection) {
+              predictorSection.classList.remove("hidden");
+              predictorSection.classList.add("flex");
+            }
+          } else {
+            showSignalsView();
+            return;
+          }
+
+          if (gameId === "aviator") resetAviatorGame();
+          else if (gameId === "mines") resetMinesGame();
+          else if (gameId === "penalty") resetPenaltyGame();
+          else if (gameId === "apple") resetAppleGame();
+          else if (gameId === "chicken") resetChickenGame();
+          else if (gameId.startsWith("slot-")) resetSlotGame();
+        }
+
+        function showSignalsView() {
+          gameView.classList.add("hidden");
+          signalsSection.classList.remove("hidden");
+          clearInterval(multiplierAnimation);
+        }
+
+        function runConsoleSimulation(e, t, n) {
+          if (!e) return;
+          const o = e.querySelector("div");
+          if (!o) return;
+          o.innerHTML = "";
+          let a = 0;
+          const s = setInterval(() => {
+            if (a < t.length) {
+              const p = document.createElement("p");
+              p.textContent = `> ${t[a]}`;
+              if (t[a].startsWith("نجاح") || t[a].startsWith("SUCCESS")) {
+                p.classList.add("success");
+              }
+              o.appendChild(p);
+              o.scrollTop = o.scrollHeight;
+              a++;
+            } else {
+              clearInterval(s);
+              if (n) n();
+            }
+          }, 300);
+        }
+
+        function enableSignalButton(btn) {
+          btn.disabled = false;
+          btn.classList.remove("btn-disabled");
+          btn.classList.add("btn-morocco-primary", "active:scale-95");
+        }
+
+        function disableSignalButton(btn) {
+          btn.disabled = true;
+          btn.classList.add("btn-disabled");
+          btn.classList.remove("btn-morocco-primary", "active:scale-95");
+        }
+
+        // Aviator
+        function resetAviatorGame() {
+          clearInterval(multiplierAnimation);
+          aviatorMultiplier.textContent = "x1.00";
+          aviatorMultiplier.classList.remove("multiplier-rising", "multiplier-final");
+          aviatorBetSuggestion.textContent = "";
+          if (aviatorConsoleOutput && aviatorConsoleOutput.querySelector("div")) {
+            aviatorConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          aviatorActionsInitial.classList.remove("hidden");
+          aviatorActionsInitial.classList.add("flex");
+          aviatorGetAnotherBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            aviatorGetBetBtn.style.display = "";
+            aviatorGetBetBtn.disabled = false;
+            aviatorGetBetBtn.classList.remove("btn-disabled");
+            disableSignalButton(aviatorGetSignalBtn);
+          } else {
+            aviatorGetBetBtn.style.display = "none";
+            enableSignalButton(aviatorGetSignalBtn);
+            aviatorGetSignalBtn.classList.add("w-full");
+          }
+        }
+        aviatorGetBetBtn.addEventListener("click", () => {
+          aviatorGetBetBtn.disabled = true;
+          aviatorGetBetBtn.classList.add("btn-disabled");
+          aviatorBetSuggestion.textContent = T.analyzingData;
+          runConsoleSimulation(aviatorConsoleOutput, T.betConsoleMessages, () => {
+            aviatorBetSuggestion.textContent = T.betSuggestion
+              .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+              .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+              .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+            enableSignalButton(aviatorGetSignalBtn);
+          });
+        });
+        aviatorGetSignalBtn.addEventListener("click", () => {
+          if (aviatorGetSignalBtn.disabled) return;
+          disableSignalButton(aviatorGetSignalBtn);
+          aviatorBetSuggestion.textContent = T.analyzingData;
+
+          runConsoleSimulation(aviatorConsoleOutput, T.aviatorSignalConsoleMessages, () => {
+            let targetMultiplier;
+            aviatorSignalCount++;
+            localStorage.setItem("aviatorSignalCount", aviatorSignalCount.toString());
+
+            if (aviatorSignalCount <= 7 && Math.random() < 0.8) {
+              targetMultiplier = 1.1 + Math.random() * 0.9;
+            } else {
+              targetMultiplier = 1.5 + Math.random() * 8.5;
+            }
+            targetMultiplier = Math.max(1.01, targetMultiplier);
+            aviatorBetSuggestion.textContent = "";
+            aviatorMultiplier.textContent = `x${targetMultiplier.toFixed(2)}`;
+            aviatorMultiplier.classList.remove("multiplier-rising");
+            aviatorMultiplier.classList.add("multiplier-final");
+
+            aviatorActionsInitial.classList.add("hidden");
+            aviatorGetAnotherBtn.classList.remove("hidden");
+          });
+        });
+        aviatorGetAnotherBtn.addEventListener("click", () => resetAviatorGame());
+
+        // Mines
+        function resetMinesGame() {
+          const gridSizeSelectDisplay = document.querySelector('[data-select-id="grid-size"] .selected-option');
+          const mineCountSelectDisplay = document.querySelector('[data-select-id="mine-count"] .selected-option');
+          if (gridSizeSelectDisplay) gridSizeSelectDisplay.textContent = `${minesState.gridSize}x${minesState.gridSize}`;
+          if (mineCountSelectDisplay) mineCountSelectDisplay.textContent = minesState.mineCount.toString();
+
+          renderMinesGrid();
+          minesBetSuggestion.textContent = "";
+          if (minesConsoleOutput && minesConsoleOutput.querySelector("div")) {
+            minesConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          minesActionsInitial.classList.remove("hidden");
+          minesActionsInitial.classList.add("flex");
+          minesGetAnotherBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            minesGetBetBtn.style.display = "";
+            minesGetBetBtn.disabled = false;
+            minesGetBetBtn.classList.remove("btn-disabled");
+            disableSignalButton(minesGetSignalBtn);
+          } else {
+            minesGetBetBtn.style.display = "none";
+            enableSignalButton(minesGetSignalBtn);
+            minesGetSignalBtn.classList.add("w-full");
+          }
+        }
+        function renderMinesGrid() {
+          minesGridContainer.innerHTML = "";
+          const gridSize = minesState.gridSize;
+          minesGridContainer.className = "grid gap-1.5 sm:gap-2 w-full max-w-md aspect-square";
+          minesGridContainer.style.gridTemplateColumns = `repeat(${gridSize}, minmax(0, 1fr))`;
+
+          for (let i = 0; i < gridSize * gridSize; i++) {
+            const cell = document.createElement("div");
+            cell.className = "mine-cell flex items-center justify-center";
+            minesGridContainer.appendChild(cell);
+          }
+        }
+        minesGetBetBtn.addEventListener("click", () => {
+          minesGetBetBtn.disabled = true;
+          minesGetBetBtn.classList.add("btn-disabled");
+          minesBetSuggestion.textContent = T.analyzingData;
+          runConsoleSimulation(minesConsoleOutput, T.betConsoleMessages, () => {
+            minesBetSuggestion.textContent = T.betSuggestion
+              .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+              .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+              .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+            enableSignalButton(minesGetSignalBtn);
+          });
+        });
+        minesGetSignalBtn.addEventListener("click", () => {
+          if (minesGetSignalBtn.disabled) return;
+          disableSignalButton(minesGetSignalBtn);
+          minesBetSuggestion.textContent = T.analyzingData;
+
+          runConsoleSimulation(minesConsoleOutput, T.minesSignalConsoleMessages, () => {
+            const cells = minesGridContainer.querySelectorAll(".mine-cell");
+            const indices = Array.from(Array(cells.length).keys());
+            for (let i = indices.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+            const safeIndices = indices.slice(0, 5);
+            minesBetSuggestion.textContent = T.signalRevealed;
+            safeIndices.forEach((index) => {
+              if (cells[index]) cells[index].classList.add("safe");
+            });
+
+            minesActionsInitial.classList.add("hidden");
+            minesGetAnotherBtn.classList.remove("hidden");
+          });
+        });
+        minesGetAnotherBtn.addEventListener("click", () => resetMinesGame());
+
+        // Penalty
+        function resetPenaltyGame() {
+          penaltyTargetZones.forEach((zone) => {
+            zone.classList.remove("highlight");
+            zone.style.transform = "";
+          });
+          penaltyBetSuggestion.textContent = "";
+          penaltySignalCountInRound = 0;
+          if (penaltyConsoleOutput && penaltyConsoleOutput.querySelector("div")) {
+            penaltyConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          penaltyActionsInitial.classList.remove("hidden");
+          penaltyActionsInitial.classList.add("flex");
+          penaltyStartNewGameBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            penaltyGetBetBtn.style.display = "";
+            penaltyGetBetBtn.disabled = false;
+            penaltyGetBetBtn.classList.remove("btn-disabled");
+            disableSignalButton(penaltyGetSignalBtn);
+          } else {
+            penaltyGetBetBtn.style.display = "none";
+            enableSignalButton(penaltyGetSignalBtn);
+            penaltyGetSignalBtn.classList.add("w-full");
+          }
+        }
+        penaltyGetBetBtn.addEventListener("click", () => {
+          penaltyGetBetBtn.disabled = true;
+          penaltyGetBetBtn.classList.add("btn-disabled");
+          penaltyBetSuggestion.textContent = T.analyzingData;
+          runConsoleSimulation(penaltyConsoleOutput, T.betConsoleMessages, () => {
+            penaltyBetSuggestion.textContent = T.betSuggestion
+              .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+              .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+              .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+            enableSignalButton(penaltyGetSignalBtn);
+          });
+        });
+        penaltyGetSignalBtn.addEventListener("click", () => {
+          if (penaltyGetSignalBtn.disabled) return;
+          penaltyGetSignalBtn.disabled = true;
+          penaltyBetSuggestion.textContent = T.analyzingData;
+
+          runConsoleSimulation(penaltyConsoleOutput, T.penaltySignalConsoleMessages, () => {
+            penaltyTargetZones.forEach((zone) => {
+              zone.classList.remove("highlight");
+              zone.style.transform = "";
+            });
+
+            const randomIndex = Math.floor(Math.random() * penaltyTargetZones.length);
+            const targetZoneElement = penaltyTargetZones[randomIndex];
+
+            if (targetZoneElement) {
+              targetZoneElement.classList.add("highlight");
+              targetZoneElement.style.transform =
+                targetZoneElement.dataset.zone === "3" ? "translateX(-50%) scale(1.1)" : "scale(1.1)";
+
+              penaltySignalCountInRound++;
+              const signalsLeft = 5 - penaltySignalCountInRound;
+
+              penaltyBetSuggestion.textContent = T.signalTargetZoneWithCount
+                .replace("{zone}", targetZoneElement.dataset.zone)
+                .replace("{count}", signalsLeft);
+
+              if (penaltySignalCountInRound === 1) {
+                penaltyStartNewGameBtn.classList.remove("hidden");
+              }
+
+              if (signalsLeft <= 0) {
+                disableSignalButton(penaltyGetSignalBtn);
+              } else {
+                penaltyGetSignalBtn.disabled = false;
+              }
+            }
+          });
+        });
+        penaltyStartNewGameBtn.addEventListener("click", () => resetPenaltyGame());
+
+        // Apple
+        function resetAppleGame() {
+          appleSignalDisplay.textContent = "#";
+          appleSignalDisplay.classList.remove("number-signal-display");
+          appleBetSuggestion.textContent = "";
+          appleSignalCountInRound = 0;
+          if (appleConsoleOutput && appleConsoleOutput.querySelector("div")) {
+            appleConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          appleActionsInitial.classList.remove("hidden");
+          appleActionsInitial.classList.add("flex");
+          appleStartNewGameBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            appleGetBetBtn.style.display = "";
+            appleGetBetBtn.disabled = false;
+            appleGetBetBtn.classList.remove("btn-disabled");
+            disableSignalButton(appleGetSignalBtn);
+          } else {
+            appleGetBetBtn.style.display = "none";
+            enableSignalButton(appleGetSignalBtn);
+            appleGetSignalBtn.classList.add("w-full");
+          }
+        }
+        appleGetBetBtn.addEventListener("click", () => {
+          appleGetBetBtn.disabled = true;
+          appleGetBetBtn.classList.add("btn-disabled");
+          appleBetSuggestion.textContent = T.analyzingData;
+          runConsoleSimulation(appleConsoleOutput, T.betConsoleMessages, () => {
+            appleBetSuggestion.textContent = T.betSuggestion
+              .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+              .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+              .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+            enableSignalButton(appleGetSignalBtn);
+          });
+        });
+        appleGetSignalBtn.addEventListener("click", () => {
+          if (appleGetSignalBtn.disabled) return;
+          appleGetSignalBtn.disabled = true;
+          appleBetSuggestion.textContent = T.analyzingData;
+
+          runConsoleSimulation(appleConsoleOutput, T.appleSignalConsoleMessages, () => {
+            appleSignalDisplay.classList.remove("number-signal-display");
+            const finalSignal = Math.floor(Math.random() * 5) + 1;
+            appleSignalDisplay.textContent = finalSignal;
+            appleSignalDisplay.classList.add("number-signal-display");
+
+            appleSignalCountInRound++;
+            const signalsLeft = 10 - appleSignalCountInRound;
+
+            appleBetSuggestion.textContent = T.signalSelectRowWithCount
+              .replace("{finalSignal}", finalSignal)
+              .replace("{count}", signalsLeft);
+
+            if (appleSignalCountInRound === 1) {
+              appleStartNewGameBtn.classList.remove("hidden");
+            }
+
+            if (signalsLeft <= 0) {
+              disableSignalButton(appleGetSignalBtn);
+            } else {
+              appleGetSignalBtn.disabled = false;
+            }
+          });
+        });
+        appleStartNewGameBtn.addEventListener("click", () => resetAppleGame());
+
+        // Chicken
+        function resetChickenGame() {
+          const difficultySelectDisplay = document.querySelector('[data-select-id="chicken-difficulty"] .selected-option');
+          if (difficultySelectDisplay) {
+            let displayDifficulty = chickenState.difficulty;
+            if (chickenState.difficulty === "Easy") displayDifficulty = "سهل";
+            else if (chickenState.difficulty === "Medium") displayDifficulty = "متوسط";
+            else if (chickenState.difficulty === "Hard") displayDifficulty = "صعب";
+            else if (chickenState.difficulty === "Hardcore") displayDifficulty = "صعب جداً";
+            difficultySelectDisplay.textContent = displayDifficulty;
+          }
+
+          chickenState.currentStep = 0;
+          renderChickenStoves(true);
+          chickenBetSuggestion.textContent = "";
+          if (chickenConsoleOutput && chickenConsoleOutput.querySelector("div")) {
+            chickenConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          chickenActionsInitial.classList.remove("hidden");
+          chickenActionsInitial.classList.add("flex");
+          chickenGetAnotherBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            chickenGetBetBtn.style.display = "";
+            chickenGetBetBtn.disabled = false;
+            chickenGetBetBtn.classList.remove("btn-disabled");
+            disableSignalButton(chickenGetSignalBtn);
+          } else {
+            chickenGetBetBtn.style.display = "none";
+            enableSignalButton(chickenGetSignalBtn);
+            chickenGetSignalBtn.classList.add("w-full");
+          }
+        }
+        function renderChickenStoves(forceRedraw = false) {
+          if (forceRedraw) {
+            chickenRoadTrack.innerHTML = "";
+            for (let i = 0; i < 10; i++) {
+              const stove = document.createElement("div");
+              stove.className = "chicken-stove absolute w-24 h-24 rounded-xl";
+              stove.style.left = `${i * STOVE_WIDTH}px`;
+              stove.style.top = "50%";
+              stove.style.transform = "translateY(-50%)";
+              chickenRoadTrack.appendChild(stove);
+            }
+          }
+          const initialChickenOffset = STOVE_WIDTH * 1.5 - (chickenIcon.offsetWidth || 64) / 2;
+          chickenIcon.style.left = `${initialChickenOffset}px`;
+          chickenIcon.style.transform = "translateY(-50%)";
+          chickenRoadTrack.style.transform = "translateX(0px)";
+        }
+        async function animateChicken(steps) {
+          for (let i = 0; i < steps; i++) {
+            chickenState.currentStep++;
+            chickenIcon.style.transform = "translateY(-100%) scale(1.1)";
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            chickenRoadTrack.style.transform = `translateX(-${chickenState.currentStep * STOVE_WIDTH}px)`;
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            chickenIcon.style.transform = "translateY(-50%) scale(1)";
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
+            const newStove = document.createElement("div");
+            newStove.className = "chicken-stove absolute w-24 h-24 rounded-xl";
+            const lastStove = chickenRoadTrack.lastChild;
+            const newLeft = (lastStove ? parseFloat(lastStove.style.left) : -STOVE_WIDTH) + STOVE_WIDTH;
+            newStove.style.left = `${newLeft}px`;
+            newStove.style.top = "50%";
+            newStove.style.transform = "translateY(-50%)";
+            chickenRoadTrack.appendChild(newStove);
+          }
+          chickenActionsInitial.classList.add("hidden");
+          chickenGetAnotherBtn.classList.remove("hidden");
+        }
+        chickenGetBetBtn.addEventListener("click", () => {
+          chickenGetBetBtn.disabled = true;
+          chickenGetBetBtn.classList.add("btn-disabled");
+          chickenBetSuggestion.textContent = T.analyzingData;
+          runConsoleSimulation(chickenConsoleOutput, T.betConsoleMessages, () => {
+            chickenBetSuggestion.textContent = T.betSuggestion
+              .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+              .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+              .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+            enableSignalButton(chickenGetSignalBtn);
+          });
+        });
+        chickenGetSignalBtn.addEventListener("click", () => {
+          if (chickenGetSignalBtn.disabled) return;
+          disableSignalButton(chickenGetSignalBtn);
+          chickenBetSuggestion.textContent = T.analyzingData;
+
+          runConsoleSimulation(chickenConsoleOutput, T.chickenSignalConsoleMessages, () => {
+            let maxSteps = 12;
+            switch (chickenState.difficulty) {
+              case "Medium": maxSteps = 10; break;
+              case "Hard": maxSteps = 8; break;
+              case "Hardcore": maxSteps = 4; break;
+              default: maxSteps = 12;
+            }
+            const signalSteps = Math.floor(Math.random() * maxSteps) + 1;
+            chickenBetSuggestion.textContent = T.signalClickGo.replace("{signalSteps}", signalSteps);
+            animateChicken(signalSteps);
+          });
+        });
+        chickenGetAnotherBtn.addEventListener("click", () => resetChickenGame());
+
+        // Slot
+        function resetSlotGame() {
+          const gameScreen = document.getElementById("game-screen-slot");
+          if (!gameScreen) return;
+          const slotNumber = gameScreen.querySelector(".slot-number");
+          const slotBetSuggestion = gameScreen.querySelector(".bet-suggestion-text");
+          const slotConsoleOutput = gameScreen.querySelector(".game-console");
+          const slotActionsInitial = gameScreen.querySelector(".slot-actions-initial");
+          const slotGetAnotherBtn = gameScreen.querySelector(".slot-get-another-btn");
+          const slotGetBetBtn = gameScreen.querySelector(".slot-get-bet-btn");
+          const slotGetSignalBtn = gameScreen.querySelector(".slot-get-signal-btn");
+
+          if (slotNumber) slotNumber.textContent = "#";
+          if (slotBetSuggestion) slotBetSuggestion.textContent = "";
+          if (slotConsoleOutput && slotConsoleOutput.querySelector("div")) {
+            slotConsoleOutput.querySelector("div").innerHTML = "";
+          }
+          if (slotActionsInitial) {
+            slotActionsInitial.classList.remove("hidden");
+            slotActionsInitial.classList.add("flex");
+          }
+          if (slotGetAnotherBtn) slotGetAnotherBtn.classList.add("hidden");
+
+          if (FEATURE_FLAGS.enableBetStep) {
+            if (slotGetBetBtn) {
+              slotGetBetBtn.style.display = "";
+              slotGetBetBtn.disabled = false;
+              slotGetBetBtn.classList.remove("btn-disabled");
+            }
+            if (slotGetSignalBtn) disableSignalButton(slotGetSignalBtn);
+          } else {
+            if (slotGetBetBtn) slotGetBetBtn.style.display = "none";
+            if (slotGetSignalBtn) {
+              enableSignalButton(slotGetSignalBtn);
+              slotGetSignalBtn.classList.add("w-full");
+            }
+          }
+        }
+        gameView.addEventListener("click", (e) => {
+          const target = e.target;
+          const gameScreen = target.closest("#game-screen-slot");
+          if (!gameScreen) return;
+
+          const slotBetSuggestion = gameScreen.querySelector(".bet-suggestion-text");
+          const slotConsoleOutput = gameScreen.querySelector(".game-console");
+          const slotGetSignalBtn = gameScreen.querySelector(".slot-get-signal-btn");
+          const slotNumber = gameScreen.querySelector(".slot-number");
+          const slotActionsInitial = gameScreen.querySelector(".slot-actions-initial");
+          const slotGetAnotherBtn = gameScreen.querySelector(".slot-get-another-btn");
+
+          if (target.matches(".slot-get-bet-btn")) {
+            target.disabled = true;
+            target.classList.add("btn-disabled");
+            slotBetSuggestion.textContent = T.analyzingData;
+            runConsoleSimulation(slotConsoleOutput, T.betConsoleMessages, () => {
+              slotBetSuggestion.textContent = T.betSuggestion
+                .replace("{minBet}", CUSTOM_CONFIG.minBet || 1)
+                .replace("{maxBet}", CUSTOM_CONFIG.maxBet || 100)
+                .replace(/{currency}/g, CUSTOM_CONFIG.currency || "$");
+              enableSignalButton(slotGetSignalBtn);
+            });
+          }
+
+          if (target.matches(".slot-get-signal-btn")) {
+            if (slotGetSignalBtn.disabled) return;
+            disableSignalButton(slotGetSignalBtn);
+            slotBetSuggestion.textContent = T.analyzingData;
+
+            runConsoleSimulation(slotConsoleOutput, T.slotSignalConsoleMessages, () => {
+              const animationInterval = setInterval(() => {
+                if (slotNumber) slotNumber.textContent = Math.floor(Math.random() * 16) + 5;
+              }, 100);
+
+              setTimeout(() => {
+                clearInterval(animationInterval);
+                const finalSpinCount = Math.floor(Math.random() * 16) + 5;
+                if (slotNumber) slotNumber.textContent = finalSpinCount;
+                if (slotBetSuggestion)
+                  slotBetSuggestion.textContent = `إشارة الذكاء الاصطناعي: أدر ${finalSpinCount} مرات للحصول على المكافأة`;
+                if (slotActionsInitial) slotActionsInitial.classList.add("hidden");
+                if (slotGetAnotherBtn) slotGetAnotherBtn.classList.remove("hidden");
+              }, 2500);
+            });
+          }
+
+          if (target.matches(".slot-get-another-btn")) {
+            resetSlotGame();
+          }
+        });
+
+        // Chat
+        function generateRandomUsername() {
+          return `user_${Math.floor(Math.random() * 90000) + 10000}`;
+        }
+        let usedMessages = [];
+        const toggleChat = (show) => {
+          if (show) {
+            chatWidget.classList.remove("hidden");
+            chatToggleBtn.classList.add("hidden");
+            chatOverlay.classList.remove("hidden");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } else {
+            chatWidget.classList.add("hidden");
+            chatToggleBtn.classList.remove("hidden");
+            chatOverlay.classList.add("hidden");
+          }
+        };
+        const addMessageToChat = (username, message, isUser = false) => {
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("text-sm", "break-words", "p-2", "rounded-lg", "bg-emerald-950/60");
+          if (isUser) {
+            messageElement.innerHTML = `<span class="font-bold text-amber-300">${username}:</span> <span class="text-white">${message}</span>`;
+          } else {
+            messageElement.innerHTML = `<span class="font-bold text-emerald-400">${username}:</span> <span class="text-emerald-50">${message}</span>`;
+          }
+          chatMessages.appendChild(messageElement);
+          const isScrolledToBottom = chatMessages.scrollHeight - chatMessages.clientHeight <= chatMessages.scrollTop + 40;
+          if (!chatWidget.classList.contains("hidden") && isScrolledToBottom) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+        };
+        const getUniqueRandomMessage = () => {
+          let availableMessages = T.fakeMessages.filter((msg) => !usedMessages.includes(msg));
+          if (availableMessages.length < 5) {
+            usedMessages = [];
+            availableMessages = T.fakeMessages;
+          }
+          const selectedMessage = availableMessages[Math.floor(Math.random() * availableMessages.length)];
+          usedMessages.push(selectedMessage);
+          return selectedMessage;
+        };
+        const startChatSimulation = () => {
+          if (chatInterval) return;
+          const simulateMessage = () => {
+            if (Math.random() < 0.25) {
+              const qaPair = T.qaPairs[Math.floor(Math.random() * T.qaPairs.length)];
+              const questionUser = generateRandomUsername();
+              addMessageToChat(questionUser, qaPair.q);
+              setTimeout(() => {
+                const answerUser = generateRandomUsername();
+                const answerText = `<span class="font-bold text-amber-300">@${questionUser}</span> ${qaPair.a}`;
+                addMessageToChat(answerUser, answerText);
+              }, Math.random() * 10000 + 5000);
+            } else {
+              addMessageToChat(generateRandomUsername(), getUniqueRandomMessage());
+            }
+            chatInterval = setTimeout(simulateMessage, Math.random() * 8000 + 3000);
+          };
+          simulateMessage();
+        };
+
+        let user = {
+          username: localStorage.getItem("ai_predictor_username"),
+          messageCount: parseInt(localStorage.getItem("ai_predictor_msg_count")) || 0,
+        };
+        if (!user.username) {
+          user.username = generateRandomUsername();
+          localStorage.setItem("ai_predictor_username", user.username);
+        }
+        const checkUserBlock = () => {
+          if (user.messageCount >= 2) {
+            chatInput.disabled = true;
+            chatSendBtn.disabled = true;
+            chatInput.placeholder = T.chatLimitReached;
+            chatSendBtn.classList.add("btn-disabled");
+          } else {
+            chatInput.disabled = false;
+            chatSendBtn.disabled = false;
+            chatInput.placeholder = T.chatPlaceholder;
+            chatSendBtn.classList.remove("btn-disabled");
+          }
+        };
+        const handleUserMessage = () => {
+          const message = chatInput.value.trim();
+          if (!message || chatInput.disabled) return;
+          addMessageToChat(user.username, message, true);
+          chatInput.value = "";
+          const currentMessageIndex = user.messageCount;
+          user.messageCount++;
+          localStorage.setItem("ai_predictor_msg_count", user.messageCount.toString());
+
+          if (currentMessageIndex < T.userReplies.length) {
+            setTimeout(() => {
+              const reply = T.userReplies[currentMessageIndex].replace("{username}", user.username);
+              addMessageToChat("AI_Assistant", reply);
+            }, Math.random() * 3000 + 2000);
+          }
+          checkUserBlock();
+        };
+
+        // Stats
+        const statsConfig = {
+          "stats-aviator": { baseSignals: 500, rangeSignals: 500, baseWinRate: 95, rangeWinRate: 3 },
+          "stats-mines": { baseSignals: 300, rangeSignals: 400, baseWinRate: 85, rangeWinRate: 7 },
+          "stats-penalty": { baseSignals: 100, rangeSignals: 100, baseWinRate: 87, rangeWinRate: 8 },
+          "stats-apple": { baseSignals: 400, rangeSignals: 200, baseWinRate: 90, rangeWinRate: 5 },
+          "stats-chicken": { baseSignals: 400, rangeSignals: 200, baseWinRate: 90, rangeWinRate: 5 },
+          "stats-vip": { baseSignals: 1000, rangeSignals: 1000, baseWinRate: 98, rangeWinRate: 1 },
+          "stats-slot": { baseSignals: 1200, rangeSignals: 800, baseWinRate: 97, rangeWinRate: 2 },
+        };
+        function updateSignalStats() {
+          document.querySelectorAll('[id^="stats-"]').forEach((p) => {
+            const configKey = p.id.startsWith("stats-slot-") ? "stats-slot" : p.id;
+            const config = statsConfig[configKey];
+            if (config) {
+              const signals = config.baseSignals + Math.floor(Math.random() * config.rangeSignals);
+              const winRate = (config.baseWinRate + Math.random() * config.rangeWinRate).toFixed(1);
+              p.innerHTML = `${T.signalsPerSec} <span class="text-emerald-400 font-bold">${signals}</span><br>${T.successRate} <span class="font-bold text-amber-300">${winRate}%</span>`;
+            }
+          });
+        }
+
+        // Live Feed
+        const liveFeedContainer = document.getElementById("live-feed-container");
+        const winnersData = [
+          { game: "aviator", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqBdX8SuaC1Ws7ZYuCVQstQ4qRi9A_3SWujg&s" },
+          { game: "mines", icon: "https://rotativka.com/en/wp-content/uploads/sites/3/2021/06/Mines-Demo.jpg" },
+          { game: "penalty", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThYP5CGxc52hWd4ToMHI8MIJhun5BEjHh5LQ&s" },
+          { game: "apple", icon: "https://play-lh.googleusercontent.com/ezAY-TvV3PlhYWLs8k8czRjWWSdBwFtPrw72fNpS8p6wByC0xBG-Dgt0K5ojieZXrg" },
+          { game: "chicken", icon: "https://cdn6.aptoide.com/imgs/1/0/2/1023a04c18a7a91673200703af12a58f_icon.png" },
+        ];
+        let winnersFeed = [];
+        const MAX_WINNERS_IN_FEED = 20;
+
+        function createWinnerElement(winner) {
+          const div = document.createElement("div");
+          div.className = "winner-item flex-shrink-0 flex items-center p-2.5 rounded-xl w-52";
+          div.innerHTML = `
+            <img src="${winner.icon}" class="w-10 h-10 rounded-lg object-cover ml-3 border border-amber-400/40" />
+            <div class="flex flex-col text-xs overflow-hidden">
+              <span class="text-emerald-100 font-bold truncate">${winner.user}</span>
+              <span class="font-bold text-amber-300 font-mono text-sm">${winner.amount} ${CUSTOM_CONFIG.currency || "$"}</span>
+            </div>
+          `;
+          return div;
+        }
+        function generateWinner() {
+          const gameData = winnersData[Math.floor(Math.random() * winnersData.length)];
+          const amount = Math.round((Math.random() * 8000 + 1000) / 100) * 100 * (CUSTOM_CONFIG.winnerMultiplier || 1);
+          return { icon: gameData.icon, user: generateRandomUsername(), amount };
+        }
+        function renderWinnersFeed() {
+          liveFeedContainer.innerHTML = "";
+          winnersFeed.forEach((winner) => {
+            const element = createWinnerElement(winner);
+            element.style.animation = "none";
+            liveFeedContainer.appendChild(element);
+          });
+        }
+        function addNewWinner() {
+          const newWinner = generateWinner();
+          winnersFeed.unshift(newWinner);
+          if (winnersFeed.length > MAX_WINNERS_IN_FEED) winnersFeed.pop();
+          liveFeedContainer.prepend(createWinnerElement(newWinner));
+          if (liveFeedContainer.children.length > MAX_WINNERS_IN_FEED) {
+            liveFeedContainer.lastChild.remove();
+          }
+          setTimeout(addNewWinner, Math.random() * 20000 + 10000);
+        }
+
+        // Promo & Lottery
+        const promoModal = document.getElementById("promoModal");
+        const closePromoModalBtn = document.getElementById("closePromoModalBtn");
+        const openLotteryFromPromoBtn = document.getElementById("openLotteryFromPromoBtn");
+        let promoInterval;
+
+        const lotteryBtn = document.getElementById("lotteryBtn");
+        const lotteryModal = document.getElementById("lotteryModal");
+        const closeLotteryModalBtn = document.getElementById("closeLotteryModalBtn");
+        const lotteryCodeInput = document.getElementById("lotteryCode");
+        const spinBtn = document.getElementById("spinBtn");
+        const spinAgainBtn = document.getElementById("spinAgainBtn");
+        const lotteryErrorMessage = document.getElementById("lotteryErrorMessage");
+        const wheelContainer = document.getElementById("wheel-container");
+        const canvas = document.getElementById("wheelCanvas");
+        const confettiCanvas = document.getElementById("confettiCanvas");
+        const lotteryControls = document.getElementById("lottery-controls");
+        const lotteryResult = document.getElementById("lottery-result");
+        const lotteryResultText = document.getElementById("lotteryResultText");
+        const ctx = canvas ? canvas.getContext("2d") : null;
+        const confettiCtx = confettiCanvas ? confettiCanvas.getContext("2d") : null;
+        const infoBtn = document.getElementById("infoBtn");
+        const infoModal = document.getElementById("infoModal");
+        const closeInfoModalBtn = document.getElementById("closeInfoModalBtn");
+
+        function showPromoModal() {
+          if (!FEATURE_FLAGS.enableLottery || !promoModal) return;
+          if (
+            !lotteryModal.classList.contains("hidden") ||
+            !infoModal.classList.contains("hidden") ||
+            !accessModal.classList.contains("hidden")
+          ) return;
+          promoModal.classList.remove("hidden");
+        }
+        function closePromoModal() {
+          if (promoModal) promoModal.classList.add("hidden");
+        }
+        function startPromoInterval() {
+          if (!FEATURE_FLAGS.enableLottery) return;
+          clearInterval(promoInterval);
+          promoInterval = setInterval(() => {
+            if (
+              !appContainer.classList.contains("hidden") &&
+              lotteryModal.classList.contains("hidden") &&
+              infoModal.classList.contains("hidden") &&
+              accessModal.classList.contains("hidden") &&
+              promoModal.classList.contains("hidden")
+            ) {
+              showPromoModal();
+            }
+          }, 300000);
+        }
+
+        if (closePromoModalBtn) closePromoModalBtn.addEventListener("click", closePromoModal);
+        if (promoModal) promoModal.addEventListener("click", (e) => { if (e.target === promoModal) closePromoModal(); });
+
+        if (canvas && ctx && wheelContainer && lotteryModal && confettiCanvas && confettiCtx) {
+          const numSegments = prizes.length;
+          const segmentAngle = (2 * Math.PI) / numSegments;
+          let currentRotation = 0;
+          let isSpinning = false;
+          let shimmerAngle = 0;
+          let animationFrameId, spinAnimationId, confettiAnimationId;
+          let centerX, centerY, radius;
+          let confettiParticles = [];
+
+          function resizeCanvas() {
+            const size = Math.min(wheelContainer.clientWidth, wheelContainer.clientHeight);
+            canvas.width = size;
+            canvas.height = size;
+            const modalBody = lotteryModal.querySelector(".morocco-panel");
+            if (modalBody) {
+              confettiCanvas.width = modalBody.clientWidth;
+              confettiCanvas.height = modalBody.clientHeight;
+            }
+            centerX = canvas.width / 2;
+            centerY = canvas.height / 2;
+            radius = Math.max(0, canvas.width / 2 - 6);
+            drawWheel();
+          }
+
+          function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(currentRotation);
+
+            for (let i = 0; i < numSegments; i++) {
+              const startAngle = i * segmentAngle;
+              const endAngle = startAngle + segmentAngle;
+
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.arc(0, 0, radius, startAngle, endAngle);
+              ctx.closePath();
+              ctx.fillStyle = prizes[i].color;
+              ctx.fill();
+
+              if (prizes[i].animatedBorder) {
+                const gradient = ctx.createConicGradient(shimmerAngle + startAngle, 0, 0);
+                gradient.addColorStop(0, "#D4AF37");
+                gradient.addColorStop(0.5, "#FEF08A");
+                gradient.addColorStop(1, "#D4AF37");
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 5;
+                ctx.stroke();
+              } else {
+                ctx.strokeStyle = "rgba(212, 175, 55, 0.45)";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+              }
+
+              ctx.save();
+              ctx.rotate(startAngle + segmentAngle / 2);
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.fillStyle = prizes[i].textColor;
+              const fontSize = Math.max(10, Math.min(15, Math.floor(radius / 14)));
+              ctx.font = `bold ${fontSize}px 'Cairo', sans-serif`;
+              const lines = prizes[i].text.split("\n");
+              const textRadius = radius * 0.65;
+              const lineHeight = fontSize * 1.2;
+
+              for (let j = 0; j < lines.length; j++) {
+                ctx.fillText(lines[j], textRadius, (j - (lines.length - 1) / 2) * lineHeight);
+              }
+              ctx.restore();
+            }
+            ctx.restore();
+          }
+
+          function idleLoop() {
+            shimmerAngle += 0.03;
+            drawWheel();
+            if (!isSpinning) animationFrameId = requestAnimationFrame(idleLoop);
+          }
+
+          function startConfetti() {
+            const colors = ["#d4af37", "#fbbf24", "#10b981", "#c8102e", "#fef3c7"];
+            confettiParticles = [];
+            for (let i = 0; i < 150; i++) {
+              confettiParticles.push({
+                x: confettiCanvas.width / 2,
+                y: confettiCanvas.height / 2,
+                radius: Math.random() * 3.5 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                vx: (Math.random() - 0.5) * 25,
+                vy: (Math.random() - 0.5) * 25,
+                alpha: 1,
+              });
+            }
+            function animateConfetti() {
+              confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+              confettiParticles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.4;
+                p.alpha -= 0.008;
+                if (p.alpha <= 0 || p.y > confettiCanvas.height) {
+                  confettiParticles.splice(index, 1);
+                } else {
+                  confettiCtx.globalAlpha = p.alpha;
+                  confettiCtx.beginPath();
+                  confettiCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                  confettiCtx.fillStyle = p.color;
+                  confettiCtx.fill();
+                  confettiCtx.globalAlpha = 1;
+                }
+              });
+              if (confettiParticles.length > 0) confettiAnimationId = requestAnimationFrame(animateConfetti);
+            }
+            cancelAnimationFrame(confettiAnimationId);
+            animateConfetti();
+          }
+
+          function spinWheel() {
+            if (isSpinning) return;
+            const code = lotteryCodeInput.value.trim();
+            if (!code) {
+              lotteryErrorMessage.textContent = "الرجاء إدخال الرمز.";
+              return;
+            }
+            let usedCodes = JSON.parse(sessionStorage.getItem("usedLotteryCodes")) || [];
+            if (usedCodes.includes(code)) {
+              lotteryErrorMessage.textContent = "تم استخدام هذا الرمز.";
+              return;
+            }
+            if (!Object.prototype.hasOwnProperty.call(lotteryCodes, code)) {
+              lotteryErrorMessage.textContent = "رمز خاطئ.";
+              return;
+            }
+
+            const targetPrizeIndex = lotteryCodes[code];
+            usedCodes.push(code);
+            sessionStorage.setItem("usedLotteryCodes", JSON.stringify(usedCodes));
+
+            cancelAnimationFrame(animationFrameId);
+            lotteryErrorMessage.textContent = "";
+            isSpinning = true;
+            spinBtn.disabled = true;
+            spinBtn.classList.add("btn-disabled");
+
+            const randomSpins = Math.floor(Math.random() * 4) + 5;
+            const targetSegmentCenterAngle = targetPrizeIndex * segmentAngle + segmentAngle / 2;
+            const randomOffset = Math.random() * segmentAngle * 0.6 - segmentAngle * 0.3;
+            const finalRotation = 2 * Math.PI * randomSpins - targetSegmentCenterAngle + randomOffset;
+
+            let start = null;
+            const duration = 6000;
+            const startRotation = currentRotation;
+            const easeOutQuint = (t) => 1 + --t * t * t * t * t;
+
+            function animateSpin(timestamp) {
+              if (!start) start = timestamp;
+              const progress = timestamp - start;
+              const easedProgress = easeOutQuint(Math.min(progress / duration, 1));
+              currentRotation = startRotation + (finalRotation - startRotation) * easedProgress;
+              shimmerAngle += 0.05;
+              drawWheel();
+
+              if (progress < duration) {
+                spinAnimationId = requestAnimationFrame(animateSpin);
+              } else {
+                isSpinning = false;
+                currentRotation %= 2 * Math.PI;
+                const adjustedRotation = (currentRotation + segmentAngle / 1000) % (2 * Math.PI);
+                const winningIndex = Math.floor(numSegments - adjustedRotation / segmentAngle) % numSegments;
+                const winningPrize = prizes[winningIndex];
+
+                lotteryControls.classList.add("hidden");
+                lotteryResultText.textContent = winningPrize.text.replace(/\n/g, " ");
+                lotteryResult.classList.remove("hidden");
+
+                if (winningPrize.text !== "لا شيء") startConfetti();
+                idleLoop();
+              }
+            }
+            cancelAnimationFrame(spinAnimationId);
+            spinAnimationId = requestAnimationFrame(animateSpin);
+          }
+
+          function openLotteryModal() {
+            lotteryModal.classList.remove("hidden");
+            resizeCanvas();
+            lotteryControls.classList.remove("hidden");
+            lotteryResult.classList.add("hidden");
+            lotteryCodeInput.value = "";
+            lotteryErrorMessage.textContent = "";
+            spinBtn.disabled = false;
+            spinBtn.classList.remove("btn-disabled");
+            cancelAnimationFrame(spinAnimationId);
+            cancelAnimationFrame(confettiAnimationId);
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            cancelAnimationFrame(animationFrameId);
+            idleLoop();
+          }
+
+          function closeLotteryModal() {
+            lotteryModal.classList.add("hidden");
+            cancelAnimationFrame(animationFrameId);
+            cancelAnimationFrame(spinAnimationId);
+            cancelAnimationFrame(confettiAnimationId);
+          }
+
+          if (openLotteryFromPromoBtn) {
+            openLotteryFromPromoBtn.addEventListener("click", () => {
+              closePromoModal();
+              openLotteryModal();
+            });
+          }
+          if (lotteryBtn && FEATURE_FLAGS.enableLottery) lotteryBtn.addEventListener("click", openLotteryModal);
+          if (closeLotteryModalBtn) closeLotteryModalBtn.addEventListener("click", closeLotteryModal);
+          lotteryModal.addEventListener("click", (e) => { if (e.target === lotteryModal) closeLotteryModal(); });
+          spinBtn.addEventListener("click", spinWheel);
+          spinAgainBtn.addEventListener("click", () => {
+            lotteryResult.classList.add("hidden");
+            lotteryControls.classList.remove("hidden");
+            lotteryCodeInput.value = "";
+            lotteryErrorMessage.textContent = "";
+            spinBtn.disabled = false;
+            spinBtn.classList.remove("btn-disabled");
+            cancelAnimationFrame(confettiAnimationId);
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          });
+          window.addEventListener("resize", resizeCanvas);
+
+          if (infoBtn) infoBtn.addEventListener("click", () => infoModal.classList.remove("hidden"));
+          if (closeInfoModalBtn) closeInfoModalBtn.addEventListener("click", () => infoModal.classList.add("hidden"));
+          if (infoModal) infoModal.addEventListener("click", (e) => { if (e.target === infoModal) infoModal.classList.add("hidden"); });
+        }
+
+        // General Listeners
+        const allCustomSelects = document.querySelectorAll("[data-select-id]");
+        signalsSection.addEventListener("click", (e) => {
+          const activateBtn = e.target.closest(".activate-btn");
+          if (activateBtn) {
+            const card = activateBtn.closest(".signal-card");
+            if (card && !card.classList.contains("locked-card") && card.dataset.game) {
+              showGameView(card.dataset.game);
+            }
+          }
+        });
+
+        allCustomSelects.forEach((selectWrapper) => {
+          const trigger = selectWrapper.querySelector(".custom-select-trigger");
+          const optionsContainer = selectWrapper.querySelector(".custom-select-options");
+          const selectedDisplay = trigger.querySelector(".selected-option");
+
+          trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            allCustomSelects.forEach((other) => {
+              if (other !== selectWrapper) other.querySelector(".custom-select-options").classList.add("hidden");
+            });
+            optionsContainer.classList.toggle("hidden");
+          });
+
+          optionsContainer.addEventListener("click", (e) => {
+            if (e.target.tagName === "DIV") {
+              const newValue = e.target.textContent.trim();
+              selectedDisplay.textContent = newValue;
+              optionsContainer.classList.add("hidden");
+
+              const selectId = selectWrapper.dataset.selectId;
+              if (selectId === "grid-size") {
+                minesState.gridSize = parseInt(newValue.split("x")[0]);
+                resetMinesGame();
+              } else if (selectId === "mine-count") {
+                minesState.mineCount = parseInt(newValue);
+                resetMinesGame();
+              } else if (selectId === "chicken-difficulty") {
+                if (newValue === "سهل") chickenState.difficulty = "Easy";
+                else if (newValue === "متوسط") chickenState.difficulty = "Medium";
+                else if (newValue === "صعب") chickenState.difficulty = "Hard";
+                else if (newValue === "صعب جداً") chickenState.difficulty = "Hardcore";
+                resetChickenGame();
+              }
+            }
+          });
+        });
+
+        document.addEventListener("click", () => {
+          allCustomSelects.forEach((s) => s.querySelector(".custom-select-options").classList.add("hidden"));
+        });
+
+        openModalBtn.addEventListener("click", openModal);
+        closeModalBtn.addEventListener("click", closeModal);
+        validateBtn.addEventListener("click", handleValidation);
+        accessCodeInput.addEventListener("keyup", (e) => { if (e.key === "Enter") handleValidation(); });
+        accessModal.addEventListener("click", (e) => { if (e.target === accessModal) closeModal(); });
+
+        chatToggleBtn.addEventListener("click", () => toggleChat(true));
+        chatCloseBtn.addEventListener("click", () => toggleChat(false));
+        chatOverlay.addEventListener("click", () => toggleChat(false));
+        chatSendBtn.addEventListener("click", handleUserMessage);
+        chatInput.addEventListener("keyup", (e) => { if (e.key === "Enter") handleUserMessage(); });
+
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("accessGrantedTimestamp");
+          localStorage.removeItem("vipUnlocked");
+          localStorage.removeItem("slotUnlocked");
+          localStorage.removeItem("ai_predictor_username");
+          localStorage.removeItem("ai_predictor_msg_count");
+          sessionStorage.removeItem("usedLotteryCodes");
+          sessionStorage.removeItem("promoShownThisSession");
+          clearInterval(promoInterval);
+          clearInterval(chatInterval);
+          window.location.reload();
+        });
+
+        document.querySelectorAll(".back-to-signals-btn").forEach((b) => b.addEventListener("click", showSignalsView));
+
+        gameView.addEventListener("click", (e) => {
+          if (e.target.matches(".i-found-game-btn")) {
+            const gameScreen = e.target.closest(".game-screen");
+            if (gameScreen) {
+              const videoSection = gameScreen.querySelector(".video-tutorial-section");
+              const predictorSection = gameScreen.querySelector(".predictor-section");
+              if (videoSection && predictorSection) {
+                videoSection.classList.add("hidden");
+                predictorSection.classList.remove("hidden");
+                predictorSection.classList.add("flex");
+              }
+            }
+          }
+        });
+
+        // Video Modal
+        const videoModal = document.getElementById("videoModal");
+        const closeVideoModalBtn = document.getElementById("closeVideoModalBtn");
+        const youtubePlayer = document.getElementById("youtube-player");
+        const videoModalTitle = document.getElementById("videoModalTitle");
+        const prevVideoBtn = document.getElementById("prevVideoBtn");
+        const nextVideoBtn = document.getElementById("nextVideoBtn");
+        const videoCounter = document.getElementById("video-counter");
+        let currentVideoList = [];
+        let currentVideoIndex = 0;
+
+        function updateVideoModal() {
+          if (!youtubePlayer || currentVideoList.length === 0) return;
+          const videoData = currentVideoList[currentVideoIndex];
+          youtubePlayer.src = videoData.url || "";
+          if (videoModalTitle) {
+            videoModalTitle.textContent = videoData.title || "";
+            videoModalTitle.classList.toggle("hidden", !videoData.title);
+          }
+          if (videoCounter) {
+            videoCounter.textContent = T.videoOf
+              .replace("{current}", currentVideoIndex + 1)
+              .replace("{total}", currentVideoList.length);
+          }
+          const hasMultiple = currentVideoList.length > 1;
+          prevVideoBtn.disabled = currentVideoIndex === 0;
+          prevVideoBtn.style.display = hasMultiple ? "block" : "none";
+          nextVideoBtn.disabled = currentVideoIndex === currentVideoList.length - 1;
+          nextVideoBtn.style.display = hasMultiple ? "block" : "none";
+          videoCounter.style.display = hasMultiple ? "block" : "none";
+        }
+
+        document.querySelectorAll(".open-video-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const { videosKey, gameKey } = btn.dataset;
+            if (VIDEO_CONFIG[gameKey] && VIDEO_CONFIG[gameKey][videosKey]?.length) {
+              currentVideoList = VIDEO_CONFIG[gameKey][videosKey];
+              currentVideoIndex = 0;
+              updateVideoModal();
+              videoModal.classList.remove("hidden");
+            }
+          });
+        });
+        const closeVideoModal = () => {
+          videoModal.classList.add("hidden");
+          youtubePlayer.src = "";
+        };
+        closeVideoModalBtn.addEventListener("click", closeVideoModal);
+        videoModal.addEventListener("click", (e) => { if (e.target === videoModal) closeVideoModal(); });
+        prevVideoBtn.addEventListener("click", () => { if (currentVideoIndex > 0) { currentVideoIndex--; updateVideoModal(); } });
+        nextVideoBtn.addEventListener("click", () => { if (currentVideoIndex < currentVideoList.length - 1) { currentVideoIndex++; updateVideoModal(); } });
+
+        // Init
+        checkAccessSession();
+        checkUserBlock();
+        startChatSimulation();
+        updateSignalStats();
+        setInterval(updateSignalStats, 2500);
+
+        if (liveFeedContainer) {
+          for (let i = 0; i < Math.min(15, MAX_WINNERS_IN_FEED); i++) {
+            winnersFeed.push(generateWinner());
+          }
+          renderWinnersFeed();
+          setTimeout(addNewWinner, Math.random() * 5000 + 2000);
+        }
+      };
+
+      SCRIPT_BODY();
+    });
+  </script>
+</body>
+</html>
